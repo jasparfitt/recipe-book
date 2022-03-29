@@ -28,6 +28,25 @@
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
+    <script>
+      const gapiLoadPromise = new Promise((resolve, reject) => {
+        gapiLoadOkay = resolve;
+        gapiLoadFail = reject;
+      });
+      const gisLoadPromise = new Promise((resolve, reject) => {
+        gisLoadOkay = resolve;
+        gisLoadFail = reject;
+      });
+    </script>
+    <script async defer src="https://apis.google.com/js/api.js" 
+      onload="gapiLoadOkay()" 
+      onerror="gapiLoadFail(event)">
+    </script>
+    <script async defer src="https://accounts.google.com/gsi/client" 
+      onload="gisLoadOkay()" 
+      onerror="gisLoadFail(event)">
+    </script>
+    
     <div id="root"></div>
     <!--
       This HTML file is a template.

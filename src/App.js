@@ -1,5 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
+import googleService from './services/googleService';
 
 function App() {
   return (
@@ -9,6 +10,7 @@ function App() {
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
+        <button onClick={googleService.signIn}>Sign in</button>
         <a
           className="App-link"
           href="https://reactjs.org"
