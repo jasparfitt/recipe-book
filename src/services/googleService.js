@@ -1,46 +1,53 @@
-import { BehaviorSubject } from 'rxjs';
 import googleConfig  from '../config/googleConfig';
+import Storage from 'store2';
 
-const signInSubject = new BehaviorSubject(false);
+const init = async (token = false) => {
+    console.log(token);
+    await gapiLoadPromise;
+    await new Promise((resolve, reject) => gapi.load('client', {callback: resolve, onerror: reject}));
+    await gapi.client.init({});
+    await gapi.client.load(googleConfig.DISCOVERY_DOCS);
+
+    if (token) {
+        gapi.client.setToken(token);
+    } else {
+        await signIn()
+    }
+}
 
 const signIn = async () => {
     let tokenClient;
-    await gapiLoadPromise;
-    await new Promise((resolve, reject) => gapi.load('client', {callback: resolve, onerror: reject}));
-    try {
-    await gapi.client.init({});
-    } catch (e) {console.log(e);}
-    try {
-    await gapi.client.load(googleConfig.DISCOVERY_DOCS);
-    } catch (e) {console.log(e);}
-
     await gisLoadPromise;
+
     await new Promise((resolve, reject) => {
         try {
             tokenClient = google.accounts.oauth2.initTokenClient({
                 client_id: googleConfig.CLIENT_ID,
                 scope: googleConfig.SCOPES,
                 prompt: 'consent',
-                callback: '',  // defined at request time in await/promise scope.
+                callback: '',
             });
             resolve();
         } catch (err) {
             reject(err);
         }
     });
+
     await new Promise((resolve, reject) => {
         try {
-          // Settle this promise in the response callback for requestAccessToken()
             tokenClient.callback = (resp) => {
                 if (resp.error !== undefined) {
                     reject(resp);
                 }
-                // GIS has automatically updated gapi.client with the newly issued access token.
+
+                Storage.set('googleToken', gapi.client.getToken());
                 console.log('gapi.client access token: ' + JSON.stringify(gapi.client.getToken()));
                 resolve(resp);
             };
+
             tokenClient.requestAccessToken();
         } catch (err) {
+            reject(err);
             console.log(err)
         }
     });
@@ -54,11 +61,12 @@ const configExists = async () => {
     })
 
     const files = response.result.files;
+    console.log(files);
     let configExists = false;
 
     if (files && files.length > 0) {
         files.forEach(file => {
-            if (file.name == 'recipes.json') {
+            if (file.name === 'recipes.json') {
                 configExists = true;
             }
         });
@@ -93,10 +101,10 @@ const createRecipes = async (recipies) => {
 }
 
 const googleService = {
+    init,
     signIn,
     configExists,
-    createRecipes,
-    signInSubject
+    createRecipes
 };
 
 export default googleService;
