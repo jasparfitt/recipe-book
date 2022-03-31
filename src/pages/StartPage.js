@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from 'react';
 
 const StartPage = () => {
-    let navigate = useNavigate();
+    const navigate = useNavigate();
     
     useEffect(() => {
         const googleEnabled = Storage.get('googleEnabled');

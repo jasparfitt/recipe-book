@@ -53,12 +53,25 @@ const signIn = async () => {
     });
 }
 
+const makeCall = async (callback) => {
+    try {
+        return await callback();
+    } catch (e) {
+        if (e.status === 401 || e.status === 403) {
+            await signIn();
+            return await callback();
+        } else {
+            throw e;
+        }
+    }
+}
+
 const configExists = async () => {
-    const response = await gapi.client.drive.files.list({
+    const response = await makeCall(() => gapi.client.drive.files.list({
         spaces: 'appDataFolder',
         fields: 'nextPageToken, files(id, name)',
         pageSize: 100
-    })
+    }));
 
     const files = response.result.files;
     console.log(files);
@@ -67,7 +80,7 @@ const configExists = async () => {
     if (files && files.length > 0) {
         files.forEach(file => {
             if (file.name === 'recipes.json') {
-                configExists = true;
+                configExists = file.id;
             }
         });
     }
@@ -89,22 +102,61 @@ const createRecipes = async (recipies) => {
     form.append('metadata', new Blob([JSON.stringify(metadata)], {type: metadata.mimeType}));
     form.append('file', file);
     
-    fetch(googleConfig.FILES_URL+'?uploadType=multipart&fields=id', {
+    const resp = await makeCall(() => fetch(googleConfig.FILES_URL+'?uploadType=multipart&fields=id', {
         method: 'POST',
         headers: new Headers({ 'Authorization': 'Bearer ' + accessToken }),
         body: form,
-    }).then((res) => {
-        return res.json();
-    }).then(function(val) {
-        console.log(val);
-    });
+    }).then(JSON.parse));
+
+    console.log(resp);
+}
+
+const updateRecipes = async (recipies, id) => {
+    const fileContent = JSON.stringify(recipies);
+    const file = new Blob([fileContent], {type: 'application/json'});
+    const metadata = {
+        'name': 'recipes.json',
+        'mimeType': 'application/json',
+    };
+
+    const accessToken = gapi.client.getToken().access_token;
+    const form = new FormData();
+    form.append('metadata', new Blob([JSON.stringify(metadata)], {type: metadata.mimeType}));
+    form.append('file', file);
+    
+    const resp = await makeCall(() => fetch(googleConfig.FILES_URL+'/'+id+'?uploadType=multipart&fields=id', {
+        method: 'POST',
+        headers: new Headers({ 'Authorization': 'Bearer ' + accessToken }),
+        body: form,
+    }).then(JSON.parse));
+}
+
+const getRecipes = async (id) => {
+    const response = await makeCall(() => gapi.client.drive.files.get(id));
+
+    console.log(response);
+    const files = response.result.files;
+    console.log(response);
+    let configExists = false;
+
+    if (files && files.length > 0) {
+        files.forEach(file => {
+            if (file.name === 'recipes.json') {
+                configExists = true;
+            }
+        });
+    }
+
+    return configExists;
 }
 
 const googleService = {
     init,
     signIn,
     configExists,
-    createRecipes
+    createRecipes,
+    updateRecipes,
+    getRecipes
 };
 
 export default googleService;
