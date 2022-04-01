@@ -31,7 +31,7 @@ function App() {
   return (
     <div>
       <Header/>
-      <div className="container">
+      <div className="container mb-5">
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<StartPage />}/>

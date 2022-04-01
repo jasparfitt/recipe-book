@@ -1,0 +1,16 @@
+.expand-background {
+    position: relative;
+    white-space: pre-wrap;
+    visibility: hidden;
+}
+
+.expand-input {
+    position: absolute;
+    overflow: hidden;
+    resize: none;
+    visibility: visible;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}

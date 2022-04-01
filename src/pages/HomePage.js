@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 const HomePage = () => {
     const navigate = useNavigate();
-    const recipes = Storage.get('recipes')?.values() || [];
+    const recipes = Object.values(Storage.get('recipes') || {}); 
 
     const goToNewRecipe = () => {
         navigate('/new-recipe');
@@ -20,7 +20,7 @@ const HomePage = () => {
                         recipes.map(recipe => {
                             return (
                                 <button type="button" className="list-group-item list-group-item-action">
-                                    {recipe.name}
+                                    {recipe.recipeName}
                                 </button>
                             );
                         })
