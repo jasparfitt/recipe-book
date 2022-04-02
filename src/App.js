@@ -6,27 +6,15 @@ import NewRecipePage from './pages/NewRecipePage';
 import RecipePage from './pages/RecipePage';
 import Storage from 'store2';
 import googleService from './services/googleService';
+import recipeService from './services/recipeService';
 import RequireStart from './components/RequireStart';
 import Header from './components/Header';
 import { useEffect } from 'react'
 
 function App() {
-
   useEffect(() => {
-    (async () => {
-      const googleEnabled = Storage.get('googleEnabled');
-
-      if (googleEnabled) {
-        await googleService.init(Storage.get('googleToken'));
-        const fileId = await googleService.configExists();
-
-        if (fileId) {
-          const recipes = await googleService.getRecipes();
-          Storage.add('recipes', recipes);
-        }
-      }
-    })();
-  });
+    recipeService.loadRecipes();
+  }, []);
 
   return (
     <div>

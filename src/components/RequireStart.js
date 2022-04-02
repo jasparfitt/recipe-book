@@ -9,6 +9,6 @@ const RequireStart = ({ children }) => {
     }
   
     return children;
-}
+};
 
 export default RequireStart;

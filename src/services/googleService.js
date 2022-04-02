@@ -66,7 +66,7 @@ const makeCall = async (callback) => {
     }
 }
 
-const configExists = async () => {
+const recipesExists = async () => {
     const response = await makeCall(() => gapi.client.drive.files.list({
         spaces: 'appDataFolder',
         fields: 'nextPageToken, files(id, name)',
@@ -75,17 +75,17 @@ const configExists = async () => {
 
     const files = response.result.files;
     console.log(files);
-    let configExists = false;
+    let exists = false;
 
     if (files && files.length > 0) {
         files.forEach(file => {
             if (file.name === 'recipes.json') {
-                configExists = file.id;
+                exists = file.id;
             }
         });
     }
 
-    return configExists;
+    return exists;
 }
 
 const createRecipes = async (recipies) => {
@@ -111,11 +111,10 @@ const createRecipes = async (recipies) => {
     console.log(resp);
 }
 
-const updateRecipes = async (recipies, id) => {
+const updateFile = async (recipies, id) => {
     const fileContent = JSON.stringify(recipies);
     const file = new Blob([fileContent], {type: 'application/json'});
     const metadata = {
-        'name': 'recipes.json',
         'mimeType': 'application/json',
     };
 
@@ -131,32 +130,19 @@ const updateRecipes = async (recipies, id) => {
     }).then(JSON.parse));
 }
 
-const getRecipes = async (id) => {
-    const response = await makeCall(() => gapi.client.drive.files.get(id));
+const getFile = async (id) => {
+    const response = await makeCall(() => gapi.client.drive.files.get({fileId: id, alt: 'media'}));
 
-    console.log(response);
-    const files = response.result.files;
-    console.log(response);
-    let configExists = false;
-
-    if (files && files.length > 0) {
-        files.forEach(file => {
-            if (file.name === 'recipes.json') {
-                configExists = true;
-            }
-        });
-    }
-
-    return configExists;
+    return JSON.parse(response.body);
 }
 
 const googleService = {
     init,
     signIn,
-    configExists,
+    recipesExists,
     createRecipes,
-    updateRecipes,
-    getRecipes
+    updateFile,
+    getFile
 };
 
 export default googleService;
