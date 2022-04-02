@@ -3,9 +3,7 @@ import MethodInput from '../components/MethodInput';
 import IngredientInput from '../components/IngredientInput';
 
 const RecipeForm = ({ isSubmitting, formValues }) => {
-    
     const onListChange = (index, helper, values, isEmpty, defaultValue) => {
-        console.log(values);
         if (index === (values.length -1)) {
             if (isEmpty(values[index])) {
                 helper.push(defaultValue);
@@ -23,7 +21,7 @@ const RecipeForm = ({ isSubmitting, formValues }) => {
 
     const onIngredientsChange = (index, helper, value) => {
         const defaultValue = { amount: '', name: '' };
-        const isEmpty = value => Object.values(value).join('');
+        const isEmpty = value => Object.values(value).join('').trim();
         formValues.ingredients[index] = {...formValues.ingredients[index], ...value}
 
         onListChange(index, helper, formValues.ingredients, isEmpty, defaultValue);
@@ -31,7 +29,7 @@ const RecipeForm = ({ isSubmitting, formValues }) => {
 
     const onStepsChange = (index, helper, value) => {
         const defaultValue = '';
-        const isEmpty = value => value;
+        const isEmpty = value => value.trim();
         formValues.steps[index] = value
 
         onListChange(index, helper, formValues.steps, isEmpty, defaultValue);
@@ -49,9 +47,11 @@ const RecipeForm = ({ isSubmitting, formValues }) => {
         <Form>
             <h3>Name</h3>
             <Field as="input" name="recipeName" className="form-control" id="nameInput" autoComplete="off"/>
+            <ErrorMessage name="recipeName" component="div" />
+            
             <h3 className="mt-2">Makes</h3>
             <Field as="input" name="makes" className="form-control" id="makes" autoComplete="off"/>
-            <ErrorMessage name="recipeName" component="div" />
+            
             <div className="card mt-2">
                 <div className="card-body">
                     <h3>Ingredients</h3>

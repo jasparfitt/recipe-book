@@ -16,9 +16,20 @@ const loadRecipes = async () => {
     }
 }
 
+const removeEmptyVals = (previous, current) => {
+    if (Object.values(current).join('').trim()) {
+        previous.push(current);
+    }
+
+    return previous;
+}
+
 const addNewRecipe = async (recipe) => {
     const recipes = Storage.get('recipes') || {};
     const uuid = uuidv4();
+    recipe.ingredients = recipe.ingredients.reduce(removeEmptyVals, []);
+    recipe.steps = recipe.steps.reduce(removeEmptyVals, []);
+    console.log(recipe);
     recipes[uuid] = recipe;
     Storage.set('recipes', recipes);
 

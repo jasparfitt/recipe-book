@@ -16,10 +16,10 @@ const NewRecipePage = () => {
         return errors;
     }
 
-    const save = (values, { setSubmitting }) => {
+    const save = async (values, { setSubmitting }) => {
         console.log(values);
-        // recipeService.addNewRecipe(values);
-        // navigate('/home');
+        await recipeService.addNewRecipe(values);
+        navigate('/home');
     }
 
     return (
