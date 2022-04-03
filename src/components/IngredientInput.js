@@ -1,8 +1,8 @@
 import { useField } from 'formik';
 
 const IngredientInput = ({ index, remove, onChange }) => {
-    const [amountField] = useField({name:'amount', value:''});
-    const [nameField] = useField({name:'name', value:''});
+    const [amountField] = useField({name:`ingredients.${index}.amount`, value:''});
+    const [nameField] = useField({name:`ingredients.${index}.name`, value:''});
 
     const fullOnChange = (event, key, field) => {
         field.onChange(event);

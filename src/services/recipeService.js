@@ -11,7 +11,22 @@ const loadRecipes = async () => {
 
         if (fileId) {
             const recipes = await googleService.getFile(fileId);
-            Storage.add('recipes', recipes);
+            console.log(recipes);
+            Storage.set('recipes', recipes);
+        }
+    }
+}
+
+const saveRecipes = async (recipes) => {
+    Storage.set('recipes', recipes);
+
+    if (Storage.get('googleEnabled')) {
+        const fileId = await googleService.recipesExists();
+
+        if (fileId) {
+            googleService.updateFile(recipes, fileId);
+        } else {
+            googleService.createRecipes(recipes);
         }
     }
 }
@@ -29,23 +44,35 @@ const addNewRecipe = async (recipe) => {
     const uuid = uuidv4();
     recipe.ingredients = recipe.ingredients.reduce(removeEmptyVals, []);
     recipe.steps = recipe.steps.reduce(removeEmptyVals, []);
+    recipe.id = uuid;
     console.log(recipe);
     recipes[uuid] = recipe;
-    Storage.set('recipes', recipes);
 
-    if (Storage.get('googleEnabled')) {
-        const fileId = await googleService.recipesExists();
+    await saveRecipes(recipes);
+}
 
-        if (fileId) {
-            googleService.updateFile(recipes, fileId);
-        } else {
-            googleService.createRecipes(recipes);
-        }
-    }
+const updateRecipe = async (recipe, id) => {
+    const recipes = Storage.get('recipes') || {};
+    recipe.ingredients = recipe.ingredients.reduce(removeEmptyVals, []);
+    recipe.steps = recipe.steps.reduce(removeEmptyVals, []);
+    recipe.id = id;
+    console.log(recipe);
+    recipes[id] = recipe;
+    
+    await saveRecipes(recipes);
+}
+
+const deleteRecipe = async (id) => {
+    const recipes = Storage.get('recipes') || {};
+    delete recipes[id];
+
+    await saveRecipes(recipes);
 }
 
 const recipeService = {
     addNewRecipe,
+    updateRecipe,
+    deleteRecipe,
     loadRecipes
 };
 

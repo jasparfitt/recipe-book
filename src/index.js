@@ -4,6 +4,7 @@ import './index.scss';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'material-icons/iconfont/material-icons.css';
+import 'bootstrap/dist/js/bootstrap.min.js'
 
 ReactDOM.render(
   <React.StrictMode>

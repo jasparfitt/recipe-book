@@ -102,13 +102,11 @@ const createRecipes = async (recipies) => {
     form.append('metadata', new Blob([JSON.stringify(metadata)], {type: metadata.mimeType}));
     form.append('file', file);
     
-    const resp = await makeCall(() => fetch(googleConfig.FILES_URL+'?uploadType=multipart&fields=id', {
+    await makeCall(() => fetch(googleConfig.FILES_URL+'?uploadType=multipart&fields=id', {
         method: 'POST',
         headers: new Headers({ 'Authorization': 'Bearer ' + accessToken }),
         body: form,
-    }).then(JSON.parse));
-
-    console.log(resp);
+    }));
 }
 
 const updateFile = async (recipies, id) => {
@@ -123,11 +121,11 @@ const updateFile = async (recipies, id) => {
     form.append('metadata', new Blob([JSON.stringify(metadata)], {type: metadata.mimeType}));
     form.append('file', file);
     
-    const resp = await makeCall(() => fetch(googleConfig.FILES_URL+'/'+id+'?uploadType=multipart&fields=id', {
-        method: 'POST',
+    await makeCall(() => fetch(googleConfig.FILES_URL+'/'+id+'?uploadType=multipart&fields=id', {
+        method: 'PATCH',
         headers: new Headers({ 'Authorization': 'Bearer ' + accessToken }),
         body: form,
-    }).then(JSON.parse));
+    }));
 }
 
 const getFile = async (id) => {
