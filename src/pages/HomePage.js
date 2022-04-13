@@ -3,7 +3,16 @@ import { useNavigate } from 'react-router-dom';
 
 const HomePage = () => {
     const navigate = useNavigate();
-    const recipes = Object.values(Storage.get('recipes') || {}); 
+    const recipes = Object.values(Storage.get('recipes') || {})
+        .sort((a, b) => {
+            if (a.recipeName === b.recipeName) {
+                return 0;
+            } else if (a.recipeName < b.recipeName) {
+                return -1;
+            } else {
+                return 1;
+            }
+          }); 
 
     const goToNewRecipe = () => navigate('/new-recipe');
     const open = (id) => navigate(`/recipe/${id}`);
@@ -11,9 +20,8 @@ const HomePage = () => {
 
     return (
         <div className="row">
-            <h1>All Recipes</h1>
             <div className="col">
-                <button className="btn btn-primary" onClick={goToNewRecipe}>Add new recipe</button>
+                <button className="btn btn-primary mt-3" onClick={goToNewRecipe}>Add new recipe</button>
                 <div className="mt-3">
                     {recipes.map((recipe, index) => {
                         return (
