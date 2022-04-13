@@ -28,7 +28,7 @@ const NewRecipePage = () => {
             <div className="col-lg-8">
                 <Formik
                     validateOnBlur
-                    initialValues={{ recipeName: '', makes: '', ingredients: [{}], steps: [] }}
+                    initialValues={{ recipeName: '', makes: '', ingredients: [{}], steps: [''] }}
                     validate={validateForm}
                     onSubmit={save}>
                     {({ isSubmitting, values }) => (
