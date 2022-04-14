@@ -1,6 +1,8 @@
 import Storage from 'store2'
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import SearchIcon from '@mui/icons-material/Search';
+import EditIcon from '@mui/icons-material/Edit';
 
 const HomePage = () => {
     const [recipes, setRecipes] = useState([])
@@ -37,9 +39,7 @@ const HomePage = () => {
                 <button className="btn btn-primary mt-3" onClick={goToNewRecipe}>Add new recipe</button>
                 <div className="input-group mt-3">
                     <span className="input-group-text">
-                        <span className="material-icons-outlined">
-                            search
-                        </span>
+                        <SearchIcon />
                     </span>
                     <input className="form-control" placeholder='Search' onChange={onSearchChange}/>
                 </div>
@@ -54,9 +54,7 @@ const HomePage = () => {
                                     {recipe.recipeName}
                                 </button>
                                 <button className="btn btn-outline-primary" onClick={() => edit(recipe.id)}>
-                                    <span className="material-icons-outlined">
-                                        edit
-                                    </span>
+                                    <EditIcon />
                                 </button>
                             </div>
                         );

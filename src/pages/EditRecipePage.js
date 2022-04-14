@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import RecipeForm from '../components/RecipeForm';
 import Storage from 'store2';
 import { useEffect, useState } from 'react';
+import BackButton from '../components/BackButton';
 
 const NewRecipePage = () => {
     const navigate = useNavigate();
@@ -19,11 +20,10 @@ const NewRecipePage = () => {
             setNotFound(true);
         } else {
             recipe.steps.push('');
-            recipe.ingredients.push({amount:'', name:''})
-            console.log(recipe)
+            recipe.ingredients.push({amount:'', name:''});
             setInitialValues(recipe);
         }
-    }, [])
+    }, [params.id])
 
     const validateForm = values => {
         const errors = {};
@@ -36,7 +36,6 @@ const NewRecipePage = () => {
     }
 
     const save = async (values, { setSubmitting }) => {
-        console.log(values);
         await recipeService.updateRecipe(values, initialValues.id);
         navigate('/home');
     }
@@ -45,6 +44,7 @@ const NewRecipePage = () => {
         <div className="row">
             <h1>Edit Recipe</h1>
             <div className="col-lg-8">
+                <BackButton />
                 {notFound ? (
                     <p>Not Found</p>
                 ) : (initialValues ? (

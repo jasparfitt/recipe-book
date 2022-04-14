@@ -1,4 +1,5 @@
 import { useField } from 'formik';
+import CloseIcon from '@mui/icons-material/Close';
 
 const IngredientInput = ({ index, remove, onChange }) => {
     const [amountField] = useField({name:`ingredients.${index}.amount`, value:''});
@@ -33,7 +34,7 @@ const IngredientInput = ({ index, remove, onChange }) => {
             </div>
             <div className="col-auto ps-0">
                 <button type="button" className="btn btn-link px-0" onClick={remove}>
-                    <span className="material-icons">close</span>
+                    <CloseIcon />
                 </button>
             </div>
         </div>

@@ -2,6 +2,7 @@ import recipeService from '../services/recipeService';
 import { Formik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import RecipeForm from '../components/RecipeForm';
+import BackButton from '../components/BackButton';
 
 const NewRecipePage = () => {
     const navigate = useNavigate();
@@ -17,7 +18,6 @@ const NewRecipePage = () => {
     }
 
     const save = async (values, { setSubmitting }) => {
-        console.log(values);
         await recipeService.addNewRecipe(values);
         navigate('/home');
     }
@@ -26,6 +26,7 @@ const NewRecipePage = () => {
         <div className="row">
             <h1>New Recipe</h1>
             <div className="col-lg-8">
+                <BackButton/>
                 <Formik
                     validateOnBlur
                     initialValues={{ recipeName: '', makes: '', ingredients: [{}], steps: [''] }}

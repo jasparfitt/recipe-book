@@ -1,4 +1,5 @@
 import ExpandingTextarea from './ExpandingTextarea';
+import CloseIcon from '@mui/icons-material/Close';
 
 const MethodInput = ({ value, index, remove, onChange }) => (
     <div className="row mt-2">
@@ -8,7 +9,7 @@ const MethodInput = ({ value, index, remove, onChange }) => (
         </div>
         <div className="col-auto ps-0">
             <button type="button" className="btn btn-link px-0" onClick={remove}>
-                <span className="material-icons">close</span>
+                <CloseIcon />
             </button>
         </div>
     </div>
