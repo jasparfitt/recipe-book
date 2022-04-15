@@ -5,6 +5,7 @@ import HomePage from './pages/HomePage';
 import NewRecipePage from './pages/NewRecipePage';
 import RecipePage from './pages/RecipePage';
 import EditRecipePage from './pages/EditRecipePage';
+import ExportPage from './pages/ExportPage';
 import recipeService from './services/recipeService';
 import RequireStart from './components/RequireStart';
 import Header from './components/Header';
@@ -21,19 +22,21 @@ function App() {
 
   return (
     <div>
-      <Header/>
+      
       {!loading ? (
-        <div className="container mb-5">
           <BrowserRouter>
-            <Routes>
-              <Route path="/*" element={<StartPage />}/>
-              <Route path="/home" element={<RequireStart><HomePage /></RequireStart>}/>
-              <Route path="/new-recipe" element={<RequireStart><NewRecipePage /></RequireStart>}/>
-              <Route path="/recipe/:id" element={<RequireStart><RecipePage /></RequireStart>}/>
-              <Route path="/edit-recipe/:id" element={<RequireStart><EditRecipePage /></RequireStart>}/>
-            </Routes>
+            <Header/>
+            <div className="container mb-5">
+              <Routes>
+                <Route path="/*" element={<StartPage />}/>
+                <Route path="/home" element={<RequireStart><HomePage /></RequireStart>}/>
+                <Route path="/new-recipe" element={<RequireStart><NewRecipePage /></RequireStart>}/>
+                <Route path="/recipe/:id" element={<RequireStart><RecipePage /></RequireStart>}/>
+                <Route path="/edit-recipe/:id" element={<RequireStart><EditRecipePage /></RequireStart>}/>
+                <Route path="/export" element={<RequireStart><ExportPage /></RequireStart>}/>
+              </Routes>
+            </div>
           </BrowserRouter>
-        </div>
       ) : null}
     </div>
   );

@@ -25,7 +25,7 @@ const RecipePage = () => {
             setNotFound(true);
         } else {
             const amount = parseInt(recipe.makes);
-            setIsMultiplier(isNaN(amount) || amount != recipe.makes.trim());
+            setIsMultiplier(isNaN(amount) || amount.toString() !== recipe.makes.trim());
             console.log(recipe);
             setRecipe(recipe);
             setOriginalRecipe(recipe);
@@ -85,13 +85,13 @@ const RecipePage = () => {
 
     return (
         <div className="row">
-            <div className="col-lg-8">
-            <BackButton className="mt-3" />
+            <div className="col-lg-8" itemscope itemtype="http://schema.org/Recipe">
+                <BackButton className="mt-3" />
                 {notFound ? (
                     <p>Not Found</p>
                 ) : (recipe ? (<>
                     <div className='row'>
-                        <h1 className='col'>{recipe.recipeName}</h1>
+                        <h1 className='col' itemprop="name">{recipe.recipeName}</h1>
                         <div className='col-auto h1'>
                             <div className="dropdown">
                                 <button className="btn p-0" disabled={notFound} type="button" id="optionsButton" data-bs-toggle="dropdown" aria-expanded="false">
@@ -105,35 +105,35 @@ const RecipePage = () => {
                             </div>
                         </div>
                     </div>
-                        <div className="collapse" id="adjustPanel">
-                            <Formik
-                                validateOnBlur
-                                initialValues={{adjust: isMultiplier ? 1 : parseInt(recipe.makes)}}
-                                validate={validateForm}>
-                                {({ isSubmitting, values }) => (
-                                    <Form className='card mb-2 card-body'>
-                                        <div className='d-flex'>
-                                            <label htmlFor="adjuster" className="form-label me-auto">Amount {isMultiplier ? 'multiplier' : ''}</label>
-                                            <button type="button" className="btn btn-link mt--4 me--3" data-bs-toggle="collapse" data-bs-target="#adjustPanel">
-                                                <CloseIcon />
-                                            </button>
-                                        </div>
-                                        <Field as="input" name="adjust" className="form-control" id="adjuster" autoComplete="off"/>
-                                        <div>
-                                            <button type="button" className="btn btn-primary mt-2" onClick={() => resetAdjuster(values)}>
-                                                Reset
-                                            </button>
-                                        </div>
-                                    </Form>
-                                )}
-                            </Formik>
-                        </div>
-                    {recipe.makes ? (<h3>Makes: {recipe.makes}</h3>) : null}
+                    <div className="collapse" id="adjustPanel">
+                        <Formik
+                            validateOnBlur
+                            initialValues={{adjust: isMultiplier ? 1 : parseInt(recipe.makes)}}
+                            validate={validateForm}>
+                            {({ isSubmitting, values }) => (
+                                <Form className='card mb-2 card-body'>
+                                    <div className='d-flex'>
+                                        <label htmlFor="adjuster" className="form-label me-auto">Amount {isMultiplier ? 'multiplier' : ''}</label>
+                                        <button type="button" className="btn btn-link mt--4 me--3" data-bs-toggle="collapse" data-bs-target="#adjustPanel">
+                                            <CloseIcon />
+                                        </button>
+                                    </div>
+                                    <Field as="input" name="adjust" className="form-control" id="adjuster" autoComplete="off"/>
+                                    <div>
+                                        <button type="button" className="btn btn-primary mt-2" onClick={() => resetAdjuster(values)}>
+                                            Reset
+                                        </button>
+                                    </div>
+                                </Form>
+                            )}
+                        </Formik>
+                    </div>
+                    {recipe.makes ? (<h3 itemprop="recipeYield">Makes: {recipe.makes}</h3>) : null}
                     {recipe.ingredients.length ? (<>
                         <h4 className='mt-2'>Ingredients</h4>
                         <ul className='list-group'>
                             {recipe.ingredients.map((ingredient, index) => (
-                                <li key={`ingredient-${index}`} className='list-group-item'>{`${ingredient.amount ?? ''} ${ingredient.name ?? ''}`}</li>
+                                <li key={`ingredient-${index}`} className='list-group-item' itemprop="recipeIngredient">{`${ingredient.amount ?? ''} ${ingredient.name ?? ''}`}</li>
                             ))}
                         </ul>
                     </>) : null}
@@ -141,7 +141,7 @@ const RecipePage = () => {
                         <h4 className='mt-2'>Method</h4>
                         <ol className='list-group list-group-numbered'>
                             {recipe.steps.map((step, index) => (
-                                <li key={`step-${index}`} className='list-group-item'>{step}</li>
+                                <li key={`step-${index}`} className='list-group-item' itemprop="recipeInstructions">{step}</li>
                             ))}
                         </ol>
                     </>) : null}

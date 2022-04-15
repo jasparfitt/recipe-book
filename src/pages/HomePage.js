@@ -31,11 +31,11 @@ const HomePage = () => {
     const onSearchChange = (event) => {
         const searchResults = allRecipes.filter(recipe => recipe.recipeName.toLowerCase().search(event.target.value.toLowerCase()) !== -1);
         setRecipes(searchResults);
-    }
+    };
 
     return (
         <div className="row">
-            <div className="col">
+            <div className="col-lg-8">
                 <button className="btn btn-primary mt-3" onClick={goToNewRecipe}>Add new recipe</button>
                 <div className="input-group mt-3">
                     <span className="input-group-text">

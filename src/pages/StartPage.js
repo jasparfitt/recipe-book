@@ -27,10 +27,12 @@ const StartPage = () => {
 
     return (
         <div className="row">
-            <h1>Recipe Book</h1>
-            <p>Connect to Google to backup and view your recipes on other devices</p>
-            <button onClick={link} className="btn btn-primary">Link to Google</button>
-            <button onClick={skip} className="btn btn-link">Skip this step</button>
+            <div className="col-lg-8">
+                <h1>Recipe Book</h1>
+                <p>Connect to Google to backup and view your recipes on other devices</p>
+                <button onClick={link} className="btn btn-primary">Link to Google</button>
+                <button onClick={skip} className="btn btn-link">Skip this step</button>
+            </div>
         </div>
     );
 }

@@ -90,41 +90,45 @@ const recipesExists = async () => {
 
 const createRecipes = async (recipies) => {
     const fileContent = JSON.stringify(recipies);
-    const file = new Blob([fileContent], {type: 'application/json'});
     const metadata = {
         'name': 'recipes.json',
         'mimeType': 'application/json',
         'parents': ['appDataFolder'],
     };
-
-    const accessToken = gapi.client.getToken().access_token;
-    const form = new FormData();
-    form.append('metadata', new Blob([JSON.stringify(metadata)], {type: metadata.mimeType}));
-    form.append('file', file);
+    
+    const form = getForm(metadata, fileContent);
     
     await makeCall(() => fetch(googleConfig.FILES_URL+'?uploadType=multipart&fields=id', {
+        ...form,
         method: 'POST',
-        headers: new Headers({ 'Authorization': 'Bearer ' + accessToken }),
-        body: form,
     }));
 }
 
+const createFile = async (html, name) => {
+    const metadata = {
+        'name': `${name} - Coook`,
+        'mimeType': 'application/vnd.google-apps.document',
+    };
+    
+    const form = getForm(metadata, html, 'text/html');
+    
+    await makeCall(() => fetch(googleConfig.FILES_URL+'?uploadType=multipart&fields=id', {
+        ...form,
+        method: 'POST',
+    }));
+};
+
 const updateFile = async (recipies, id) => {
     const fileContent = JSON.stringify(recipies);
-    const file = new Blob([fileContent], {type: 'application/json'});
     const metadata = {
         'mimeType': 'application/json',
     };
 
-    const accessToken = gapi.client.getToken().access_token;
-    const form = new FormData();
-    form.append('metadata', new Blob([JSON.stringify(metadata)], {type: metadata.mimeType}));
-    form.append('file', file);
+    const form = getForm(metadata, fileContent);
     
     await makeCall(() => fetch(googleConfig.FILES_URL+'/'+id+'?uploadType=multipart&fields=id', {
-        method: 'PATCH',
-        headers: new Headers({ 'Authorization': 'Bearer ' + accessToken }),
-        body: form,
+        ...form,
+        method: 'PATCH'
     }));
 }
 
@@ -134,13 +138,26 @@ const getFile = async (id) => {
     return JSON.parse(response.body);
 }
 
+const getForm = (metadata, fileContent, mimeType = '') => {
+    const file = new Blob([fileContent], {type: mimeType || metadata.mimeType});
+    const form = new FormData();
+    form.append('metadata', new Blob([JSON.stringify(metadata)], {type: 'application/json'}));
+    form.append('file', file);
+
+    const accessToken = gapi.client.getToken().access_token;
+    const header = new Headers({ 'Authorization': 'Bearer ' + accessToken });
+
+    return {body: form, headers: header};
+}
+
 const googleService = {
     init,
     signIn,
     recipesExists,
     createRecipes,
     updateFile,
-    getFile
+    getFile,
+    createFile
 };
 
 export default googleService;
