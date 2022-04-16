@@ -22,7 +22,6 @@ function App() {
 
   return (
     <div>
-      
       {!loading ? (
           <BrowserRouter>
             <Header/>
@@ -34,6 +33,7 @@ function App() {
                 <Route path="/recipe/:id" element={<RequireStart><RecipePage /></RequireStart>}/>
                 <Route path="/edit-recipe/:id" element={<RequireStart><EditRecipePage /></RequireStart>}/>
                 <Route path="/export" element={<RequireStart><ExportPage /></RequireStart>}/>
+                <Route path="/export/:id" element={<RequireStart><ExportPage /></RequireStart>}/>
               </Routes>
             </div>
           </BrowserRouter>

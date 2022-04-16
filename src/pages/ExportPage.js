@@ -2,14 +2,16 @@ import { Formik, Field, Form } from 'formik';
 import store from 'store2';
 import googleService from '../services/googleService';
 import html2pdf from 'html-to-pdf-js';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import './ExportPage.scss';
 import { useRef } from 'react';
 
 const ExportPage = () => {
   const selectAll = useRef();
   const navigate = useNavigate();
-  const initialValues = {type: 'googleDoc', newPage: true, recipes: [], name: 'Recipes - Coook'};
+  const params = useParams();
+  const initialRecipes = params.id ? [params.id] : [];
+  const initialValues = {type: 'googleDoc', newPage: true, recipes: initialRecipes, name: 'Recipes - Coook'};
   const recipes = Object.values(store.get('recipes') || {}).sort((a, b) => {
     if (a.recipeName === b.recipeName) {
       return 0;

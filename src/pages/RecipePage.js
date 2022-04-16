@@ -26,7 +26,6 @@ const RecipePage = () => {
         } else {
             const amount = parseInt(recipe.makes);
             setIsMultiplier(isNaN(amount) || amount.toString() !== recipe.makes.trim());
-            console.log(recipe);
             setRecipe(recipe);
             setOriginalRecipe(recipe);
         }
@@ -83,15 +82,19 @@ const RecipePage = () => {
         setRecipe(originalRecipe);
     };
 
+    const exportRecipe = () => {
+        navigate(`/export/${params.id}`);
+    }
+
     return (
         <div className="row">
-            <div className="col-lg-8" itemscope itemtype="http://schema.org/Recipe">
+            <div className="col-lg-8" itemScope itemType="http://schema.org/Recipe">
                 <BackButton className="mt-3" />
                 {notFound ? (
                     <p>Not Found</p>
                 ) : (recipe ? (<>
                     <div className='row'>
-                        <h1 className='col' itemprop="name">{recipe.recipeName}</h1>
+                        <h1 className='col' itemProp="name">{recipe.recipeName}</h1>
                         <div className='col-auto h1'>
                             <div className="dropdown">
                                 <button className="btn p-0" disabled={notFound} type="button" id="optionsButton" data-bs-toggle="dropdown" aria-expanded="false">
@@ -100,6 +103,7 @@ const RecipePage = () => {
                                 <ul className="dropdown-menu" aria-labelledby="optionsButton">
                                     <li><button className="dropdown-item" onClick={editRecipe}>Update</button></li>
                                     <li><button className="dropdown-item" onClick={deleteRecipe}>Delete</button></li>
+                                    <li><button className="dropdown-item" onClick={exportRecipe}>Export recipe</button></li>
                                     <li><button className="dropdown-item" data-bs-toggle="collapse" data-bs-target="#adjustPanel">Adjust amount</button></li>
                                 </ul>
                             </div>
@@ -128,12 +132,12 @@ const RecipePage = () => {
                             )}
                         </Formik>
                     </div>
-                    {recipe.makes ? (<h3 itemprop="recipeYield">Makes: {recipe.makes}</h3>) : null}
+                    {recipe.makes ? (<h3 itemProp="recipeYield">Makes: {recipe.makes}</h3>) : null}
                     {recipe.ingredients.length ? (<>
                         <h4 className='mt-2'>Ingredients</h4>
                         <ul className='list-group'>
                             {recipe.ingredients.map((ingredient, index) => (
-                                <li key={`ingredient-${index}`} className='list-group-item' itemprop="recipeIngredient">{`${ingredient.amount ?? ''} ${ingredient.name ?? ''}`}</li>
+                                <li key={`ingredient-${index}`} className='list-group-item' itemProp="recipeIngredient">{`${ingredient.amount ?? ''} ${ingredient.name ?? ''}`}</li>
                             ))}
                         </ul>
                     </>) : null}
@@ -141,7 +145,7 @@ const RecipePage = () => {
                         <h4 className='mt-2'>Method</h4>
                         <ol className='list-group list-group-numbered'>
                             {recipe.steps.map((step, index) => (
-                                <li key={`step-${index}`} className='list-group-item' itemprop="recipeInstructions">{step}</li>
+                                <li key={`step-${index}`} className='list-group-item' itemProp="recipeInstructions">{step}</li>
                             ))}
                         </ol>
                     </>) : null}
