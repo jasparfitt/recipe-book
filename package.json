@@ -13,6 +13,7 @@
     "bootstrap": "^5.1.3",
     "fetch": "^1.1.0",
     "formik": "^2.2.9",
+    "html-to-pdf-js": "^0.9.3",
     "node-sass": "^7.0.1",
     "parse-unit": "^1.0.1",
     "react": "^17.0.2",

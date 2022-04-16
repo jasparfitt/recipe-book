@@ -106,7 +106,7 @@ const createRecipes = async (recipies) => {
 
 const createFile = async (html, name) => {
     const metadata = {
-        'name': `${name} - Coook`,
+        'name': name,
         'mimeType': 'application/vnd.google-apps.document',
     };
     
