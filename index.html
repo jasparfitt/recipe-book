@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+    <!-- This is the main template for the site, with index.jsx building the content and behavior -->
+    
+    <title>Coook</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="favicon.ico" />
+    <link rel="manifest" href="manifest.json" />
+  </head>
+  <body>
+    <script>
+      const gapiLoadPromise = new Promise((resolve, reject) => {
+        gapiLoadOkay = resolve;
+        gapiLoadFail = reject;
+      });
+      const gisLoadPromise = new Promise((resolve, reject) => {
+        gisLoadOkay = resolve;
+        gisLoadFail = reject;
+      });
+    </script>
+    <script async defer src="https://apis.google.com/js/api.js" 
+      onload="gapiLoadOkay()" 
+      onerror="gapiLoadFail(event)">
+    </script>
+    <script async defer src="https://accounts.google.com/gsi/client" 
+      onload="gisLoadOkay()" 
+      onerror="gisLoadFail(event)">
+    </script>
+    <div id="root"></div>
+    <script type="module" src="/src/index.jsx"></script>
+  </body>
+</html>

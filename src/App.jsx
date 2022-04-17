@@ -9,7 +9,7 @@ import ExportPage from './pages/ExportPage';
 import recipeService from './services/recipeService';
 import RequireStart from './components/RequireStart';
 import Header from './components/Header';
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 function App() {
   let [loading, setLoading] = useState(true);

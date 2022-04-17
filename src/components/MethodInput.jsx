@@ -1,5 +1,6 @@
 import ExpandingTextarea from './ExpandingTextarea';
 import CloseIcon from '@mui/icons-material/Close';
+import React from 'react';
 
 const MethodInput = ({ value, index, remove, onChange }) => (
     <div className="row mt-2">

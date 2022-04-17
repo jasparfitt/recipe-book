@@ -1,6 +1,6 @@
 import Storage from 'store2'
 import { useParams, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import recipeService from '../services/recipeService';
 import BackButton from '../components/BackButton';
 import './RecipePage.scss'

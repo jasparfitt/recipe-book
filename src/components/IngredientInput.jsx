@@ -1,5 +1,6 @@
 import { useField } from 'formik';
 import CloseIcon from '@mui/icons-material/Close';
+import React from 'react';
 
 const IngredientInput = ({ index, remove, onChange }) => {
     const [amountField] = useField({name:`ingredients.${index}.amount`, value:''});

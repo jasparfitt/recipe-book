@@ -1,5 +1,6 @@
 import { useField } from 'formik';
 import './ExpandingTextarea.scss';
+import React from 'react';
 
 const ExpandingTextarea = ({ name, value, onChange }) => {
     const [field] = useField({name, value});

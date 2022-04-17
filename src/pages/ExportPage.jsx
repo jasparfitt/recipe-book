@@ -4,7 +4,7 @@ import googleService from '../services/googleService';
 import html2pdf from 'html-to-pdf-js';
 import { useNavigate, useParams } from 'react-router-dom';
 import './ExportPage.scss';
-import { useRef } from 'react';
+import React, { useRef } from 'react';
 
 const ExportPage = () => {
   const selectAll = useRef();

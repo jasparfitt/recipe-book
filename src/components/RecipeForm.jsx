@@ -1,6 +1,7 @@
 import { Form, Field, ErrorMessage, FieldArray } from 'formik';
-import MethodInput from '../components/MethodInput';
-import IngredientInput from '../components/IngredientInput';
+import MethodInput from './MethodInput';
+import IngredientInput from './IngredientInput';
+import React from 'react';
 
 const RecipeForm = ({ isSubmitting, formValues }) => {
     const onListChange = (index, helper, values, isEmpty, defaultValue) => {
