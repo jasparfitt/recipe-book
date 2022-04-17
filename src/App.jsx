@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import './App.scss';
 import StartPage from './pages/StartPage';
 import HomePage from './pages/HomePage';
 import NewRecipePage from './pages/NewRecipePage';
