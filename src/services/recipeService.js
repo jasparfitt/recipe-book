@@ -17,6 +17,19 @@ const loadRecipes = async () => {
     }
 }
 
+const getRecipes = async () => {
+    await googleService.init(Storage.get('googleToken'));
+    const fileId = await googleService.recipesExists();
+    let recipes = {};
+
+    if (fileId) {
+        recipes = await googleService.getFile(fileId);
+        console.log(recipes);
+    }
+
+    return recipes;
+}
+
 const saveRecipes = async (recipes) => {
     Storage.set('recipes', recipes);
 
@@ -73,7 +86,9 @@ const recipeService = {
     addNewRecipe,
     updateRecipe,
     deleteRecipe,
-    loadRecipes
+    loadRecipes,
+    saveRecipes,
+    getRecipes,
 };
 
 export default recipeService;

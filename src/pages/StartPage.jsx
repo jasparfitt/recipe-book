@@ -1,4 +1,5 @@
 import googleService from '../services/googleService';
+import recipeService from '../services/recipeService';
 import Storage from 'store2';
 import { useNavigate } from "react-router-dom";
 import React, { useEffect } from 'react';
@@ -17,6 +18,8 @@ const StartPage = () => {
     const link = async () => {
         await googleService.init();
         Storage.add('googleEnabled', true);
+        await recipeService.loadRecipes();
+
         navigate('/home')
     };
     

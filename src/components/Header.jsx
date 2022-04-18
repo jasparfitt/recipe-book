@@ -1,14 +1,23 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 import Storage from 'store2';
+import recipeService from '../services/recipeService';
 
 const Header = () => {
   const navigate = useNavigate();
   const [googleEnabled, setGoogleEnabled] = useState(Storage.get('googleEnabled'));
 
-  const changeGoogleState = () => {
-    Storage.set('googleEnabled', !googleEnabled);
-    setGoogleEnabled(!googleEnabled);
+  const changeGoogleState = async () => {
+    const newGoogleState = !googleEnabled;
+    Storage.set('googleEnabled', newGoogleState);
+    setGoogleEnabled(newGoogleState);
+
+    if (newGoogleState) {
+      const googleRecipes = await recipeService.getRecipes();
+      const recipes = Storage.get('recipes');
+
+      recipeService.saveRecipes({...googleRecipes, ...recipes})
+    }
   }
 
   return (
@@ -33,6 +42,7 @@ const Header = () => {
               </li>
               <li className="nav-item">
                 <button className="nav-link btn link-btn" onClick={() => navigate('/export')}  data-bs-dismiss="offcanvas">Export recipes</button>
+                <button className="nav-link btn link-btn" onClick={() => navigate('/import')}  data-bs-dismiss="offcanvas">Import recipes</button>
               </li>
             </ul>
           </div>

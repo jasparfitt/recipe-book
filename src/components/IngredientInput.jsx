@@ -30,7 +30,7 @@ const IngredientInput = ({ index, remove, onChange }) => {
                         placeholder={index === 0 ? 'Plain flour': ''}  
                         aria-label="ingredient name" 
                         autoComplete="off"
-                        onKeyUp={event => fullOnChange(event, 'name', nameField)} />
+                        onChange={event => fullOnChange(event, 'name', nameField)} />
                 </div>
             </div>
             <div className="col-auto ps-0">

@@ -35,8 +35,8 @@ const RecipePage = () => {
         navigate(`/edit-recipe/${params.id}`);
     };
 
-    const deleteRecipe = () => {
-        recipeService.deleteRecipe(params.id);
+    const deleteRecipe = async () => {
+        await recipeService.deleteRecipe(params.id);
         navigate('/home');
     };
 

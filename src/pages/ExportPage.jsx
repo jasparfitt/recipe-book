@@ -1,10 +1,11 @@
-import { Formik, Field, Form } from 'formik';
+import { Formik, Field, Form, ErrorMessage } from 'formik';
 import store from 'store2';
 import googleService from '../services/googleService';
 import html2pdf from 'html-to-pdf-js';
 import { useNavigate, useParams } from 'react-router-dom';
 import './ExportPage.scss';
 import React, { useRef } from 'react';
+import saveAs from 'file-saver';
 
 const ExportPage = () => {
   const selectAll = useRef();
@@ -22,7 +23,12 @@ const ExportPage = () => {
     }
   });
 
-  const validateForm = (value, touched, values, setFieldValue) => {
+  const updateSelectAllAndName = (value, touched, values, setFieldValue) => {
+    if (value === values.recipes) {
+      // no change no need to check
+      return;
+    }
+
     if (value.length === recipes.length) {
       selectAll.current.checked = true;
       selectAll.current.indeterminate = false;
@@ -52,7 +58,8 @@ const ExportPage = () => {
     setSubmitting(true);
     
     const name = values.name;
-    const htmlArray = recipes.filter(recipe => values.recipes.includes(recipe.id)).map(recipe => {
+    const chosenRecipes = recipes.filter(recipe => values.recipes.includes(recipe.id));
+    const htmlArray = chosenRecipes.map(recipe => {
       const ingredientsString = recipe.ingredients.map(ingredient => {
         return `<div>${ingredient.amount ?? ''} ${ingredient.name ?? ''}</div>`
       }).join('');
@@ -83,6 +90,15 @@ const ExportPage = () => {
       };
 
       await html2pdf().set(options).from(htmlArray.join(values.newPage ? '<hr style="visibility: hidden" class="afterClass">' : '<hr>')).save();
+    } else if (values.type === 'json') {
+      const content = JSON.stringify(chosenRecipes);
+      const filename = `${name}.json`;
+
+      const blob = new Blob([content], {
+        type: "text/plain;charset=utf-8"
+      });
+
+      saveAs(blob, filename);
     }
 
     navigate('/home');
@@ -98,32 +114,51 @@ const ExportPage = () => {
     setFieldValue('recipes', newRecipes);
   };
 
+  const validate = (values) => {
+    const errors = {};
+
+    if (values.recipes.length < 1) {
+      errors.recipes = "You must choose at least one recipe.";
+    }
+
+    if (!values.name) {
+      errors.name = "You need to set a name.";
+    }
+
+    return errors;
+  };
+
   return (
     <div className="row">
       <div className="col-lg-8">
         <h1>Export Recipes</h1>
         <Formik
-          validateOnBlur
           initialValues={initialValues}
-          onSubmit={save}>
-          {({ isSubmitting, values, setFieldValue, touched }) => (
+          onSubmit={save}
+          validate={validate}>
+          {({ isSubmitting, values, setFieldValue, touched, errors }) => (
             <Form>
               <div className="btn-group" role="group" aria-label="choose export type">
                 <Field type="radio" className="btn-check" name="type" id="googleDocType" value="googleDoc"
                   autoComplete="off"/>
                 <label className="btn btn-outline-primary" htmlFor="googleDocType">Google doc</label>
-
                 <Field type="radio" className="btn-check" name="type" id="pdfType" value="pdf"
                   autoComplete="off"/>
                 <label className="btn btn-outline-primary" htmlFor="pdfType">PDF</label>
+                <Field type="radio" className="btn-check" name="type" id="jsonType" value="json"
+                  autoComplete="off"/>
+                <label className="btn btn-outline-primary" htmlFor="jsonType">JSON</label>
               </div>
               <div className="form-check mt-2">
-                <Field className="form-check-input" type="checkbox" id="newPage" name="newPage"/>
+                <Field className="form-check-input" type="checkbox" id="newPage" name="newPage" disabled={values.type === 'json'}/>
                 <label className="form-check-label" htmlFor="newPage">
                   Put each recipe on a new page
                 </label>
               </div>
               <h2 className='mt-2'>Choose Recipes</h2>
+              <div className="text-danger">
+                <ErrorMessage name="recipes" />
+              </div>
               <div className="form-check mx-1">
                 <input ref={selectAll} className="form-check-input" onChange={(e) =>changeSelectAll(e, setFieldValue)} type="checkbox" name="recipes" id="selectAll"/>
                 <label className="form-check-label" htmlFor="selectAll">
@@ -133,7 +168,7 @@ const ExportPage = () => {
               <div className="recipeCheckList">
                 {recipes.map((recipe, index) => (
                   <div className="form-check mx-1" key={`recipe-check-${index}`}>
-                    <Field className="form-check-input" validate={(value) => validateForm(value, touched, values, setFieldValue)} type="checkbox" name="recipes" value={recipe.id} id={`recipeCheck${index}`} />
+                    <Field className="form-check-input" validate={(value) => updateSelectAllAndName(value, touched, values, setFieldValue)} type="checkbox" name="recipes" value={recipe.id} id={`recipeCheck${index}`} />
                     <label className="form-check-label" htmlFor={`recipeCheck${index}`}>
                       {recipe.recipeName}
                     </label>
@@ -142,7 +177,10 @@ const ExportPage = () => {
               </div>
               <div className="mt-2">
                 <label htmlFor="name" className="form-label">Name</label>
-                <Field className="form-control" name="name" id="name" autoComplete="off"/>
+                <Field className={`form-control ${errors.name ? 'is-invalid' : ''}`} name="name" id="name" autoComplete="off"/>
+                <div className="text-danger">
+                  <ErrorMessage name="name" />
+                </div>
               </div>
               <button type="submit" disabled={isSubmitting} className="btn btn-primary mt-2">Export</button>
             </Form>

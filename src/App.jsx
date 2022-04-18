@@ -5,6 +5,7 @@ import NewRecipePage from './pages/NewRecipePage';
 import RecipePage from './pages/RecipePage';
 import EditRecipePage from './pages/EditRecipePage';
 import ExportPage from './pages/ExportPage';
+import ImportPage from './pages/ImportPage';
 import recipeService from './services/recipeService';
 import RequireStart from './components/RequireStart';
 import Header from './components/Header';
@@ -33,6 +34,7 @@ function App() {
                 <Route path="/edit-recipe/:id" element={<RequireStart><EditRecipePage /></RequireStart>}/>
                 <Route path="/export" element={<RequireStart><ExportPage /></RequireStart>}/>
                 <Route path="/export/:id" element={<RequireStart><ExportPage /></RequireStart>}/>
+                <Route path="/import" element={<RequireStart><ImportPage /></RequireStart>}/>
               </Routes>
             </div>
           </BrowserRouter>
