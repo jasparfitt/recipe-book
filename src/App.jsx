@@ -24,7 +24,7 @@ function App() {
     <div>
       {!loading ? (
           <BrowserRouter>
-            <Header/>
+            <Header />
             <div className="container mb-5">
               <Routes>
                 <Route path="/*" element={<StartPage />}/>

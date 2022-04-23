@@ -44,7 +44,7 @@ const ImportPage = () => {
       recipe.id = uuidv4();
     }
 
-    if (input.makes && (typeof input.makes === 'string' || typeof input.makes === 'integer')) {
+    if (input.makes && (typeof input.makes === 'string' || typeof input.makes === 'number')) {
       recipe.makes = input.makes;
     }
 
