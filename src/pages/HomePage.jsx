@@ -11,6 +11,7 @@ const HomePage = () => {
 
     useEffect(() => {
         const allRecipes = Object.values(Storage.get('recipes') || {})
+            .filter(r => r !== 'deleted')
             .sort((a, b) => {
                 if (a.recipeName === b.recipeName) {
                     return 0;

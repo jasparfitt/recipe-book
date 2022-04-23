@@ -13,15 +13,17 @@ const ExportPage = () => {
   const params = useParams();
   const initialRecipes = params.id ? [params.id] : [];
   const initialValues = {type: 'googleDoc', newPage: true, recipes: initialRecipes, name: 'Recipes - Coook'};
-  const recipes = Object.values(store.get('recipes') || {}).sort((a, b) => {
-    if (a.recipeName === b.recipeName) {
-      return 0;
-    } else if (a.recipeName < b.recipeName) {
-      return -1;
-    } else {
-      return 1;
-    }
-  });
+  const recipes = Object.values(store.get('recipes') || {})
+    .filter(r => r !== 'deleted')
+    .sort((a, b) => {
+      if (a.recipeName === b.recipeName) {
+        return 0;
+      } else if (a.recipeName < b.recipeName) {
+        return -1;
+      } else {
+        return 1;
+      }
+    });
 
   const updateSelectAllAndName = (value, touched, values, setFieldValue) => {
     if (value === values.recipes) {
@@ -134,6 +136,8 @@ const ExportPage = () => {
         <h1>Export Recipes</h1>
         <Formik
           initialValues={initialValues}
+          validateOnBlur={false}
+          validateOnChange={false}
           onSubmit={save}
           validate={validate}>
           {({ isSubmitting, values, setFieldValue, touched, errors }) => (

@@ -21,7 +21,7 @@ const RecipePage = () => {
         const recipes = Storage.get('recipes');
         const recipe = recipes[params.id];
 
-        if (!recipe) {
+        if (!recipe || recipe === 'deleted') {
             setNotFound(true);
         } else {
             const amount = parseInt(recipe.makes);

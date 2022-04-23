@@ -10,11 +10,21 @@ const loadRecipes = async () => {
         const fileId = await googleService.recipesExists();
 
         if (fileId) {
-            const recipes = await googleService.getFile(fileId);
-            console.log(recipes);
-            Storage.set('recipes', recipes);
+            const googleRecipes = await googleService.getFile(fileId);
+            const localRecipes = Storage.get('recipes');
+            const localDeleted = getDeleted(localRecipes);
+
+            const newRecipes = {...localRecipes, ...googleRecipes, ...localDeleted}
+            Storage.set('recipes', newRecipes);
+            saveRecipes(newRecipes);
         }
     }
+}
+
+const getDeleted = (recipes) => {
+    return Object.keys(recipes)
+        .filter( key => recipes[key] === 'deleted') 
+        .reduce( (res, key) => (res[key] = recipes[key], res), {} );
 }
 
 const getRecipes = async () => {
@@ -77,7 +87,7 @@ const updateRecipe = async (recipe, id) => {
 
 const deleteRecipe = async (id) => {
     const recipes = Storage.get('recipes') || {};
-    delete recipes[id];
+    recipes[id] = 'deleted';
 
     await saveRecipes(recipes);
 }

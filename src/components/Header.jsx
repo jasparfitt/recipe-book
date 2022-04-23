@@ -14,9 +14,10 @@ const Header = () => {
 
     if (newGoogleState) {
       const googleRecipes = await recipeService.getRecipes();
-      const recipes = Storage.get('recipes');
+      const googleDeleted = getDeleted(googleRecipes);
+      const localRecipes = Storage.get('recipes');
 
-      recipeService.saveRecipes({...googleRecipes, ...recipes})
+      recipeService.saveRecipes({...googleRecipes, ...localRecipes, ...googleDeleted})
     }
   }
 
