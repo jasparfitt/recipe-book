@@ -19,8 +19,12 @@ const NewRecipePage = () => {
         if (!recipe) {
             setNotFound(true);
         } else {
+            recipe.steps = (recipe.steps || [])
+            recipe.ingredients = (recipe.ingredients || [])
+            recipe.tags = (recipe.tags || []).join(', ')
             recipe.steps.push('');
             recipe.ingredients.push({amount:'', name:''});
+            
             setInitialValues(recipe);
         }
     }, [params.id])

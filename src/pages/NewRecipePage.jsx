@@ -30,7 +30,7 @@ const NewRecipePage = () => {
                 <BackButton/>
                 <Formik
                     validateOnBlur
-                    initialValues={{ recipeName: '', makes: '', ingredients: [{}], steps: [''] }}
+                    initialValues={{ recipeName: '', makes: '', ingredients: [{}], steps: [''], tags: [''] }}
                     validate={validateForm}
                     onSubmit={save}>
                     {({ isSubmitting, values }) => (

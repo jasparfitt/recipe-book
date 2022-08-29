@@ -36,6 +36,14 @@ const RecipeForm = ({ isSubmitting, formValues }) => {
         onListChange(index, helper, formValues.steps, isEmpty, defaultValue);
     }
 
+    const onTagsChange = (index, helper, value) => {
+        const defaultValue = '';
+        const isEmpty = value => value.trim();
+        formValues.tags[index] = value
+
+        onListChange(index, helper, formValues.tags, isEmpty, defaultValue);
+    }
+
     const removeItem = (index, helper, values) => {
         helper.remove(index);
 
@@ -46,11 +54,14 @@ const RecipeForm = ({ isSubmitting, formValues }) => {
 
     return (
         <Form>
-            <h3>Name</h3>
+            <label htmlFor="nameInput" className="h3 mt-2">Name</label>
             <Field as="input" name="recipeName" className="form-control" id="nameInput" autoComplete="off"/>
             <ErrorMessage name="recipeName" component="div" />
+
+            <label htmlFor="tags" className="h3 mt-2">Tags</label>
+            <Field as="input" name="tags" className="form-control" id="tags" placeholder="i.e. baking, dessert, cake" autoComplete="off"/>
             
-            <h3 className="mt-2">Makes</h3>
+            <label htmlFor="makes" className="h3 mt-2">Makes</label>
             <Field as="input" name="makes" className="form-control" id="makes" autoComplete="off"/>
             
             <div className="card mt-2">

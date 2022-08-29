@@ -86,10 +86,14 @@ const RecipePage = () => {
         navigate(`/export/${params.id}`);
     }
 
+    const goToTag = (tag) => {
+        navigate(`/tag/${tag}`)
+    }
+
     return (
         <div className="row">
             <div className="col-lg-8" itemScope itemType="http://schema.org/Recipe">
-                <BackButton className="mt-3" />
+                <BackButton />
                 {notFound ? (
                     <p>Not Found</p>
                 ) : (recipe ? (<>
@@ -97,7 +101,7 @@ const RecipePage = () => {
                         <h1 className='col' itemProp="name">{recipe.recipeName}</h1>
                         <div className='col-auto h1'>
                             <div className="dropdown">
-                                <button className="btn p-0" disabled={notFound} type="button" id="optionsButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                <button className="btn btn-link p-0" disabled={notFound} type="button" id="optionsButton" data-bs-toggle="dropdown" aria-expanded="false">
                                     <MoreVertIcon />
                                 </button>
                                 <ul className="dropdown-menu" aria-labelledby="optionsButton">
@@ -114,7 +118,7 @@ const RecipePage = () => {
                             validateOnBlur
                             initialValues={{adjust: isMultiplier ? 1 : parseInt(recipe.makes)}}
                             validate={validateForm}>
-                            {({ isSubmitting, values }) => (
+                            {({ values }) => (
                                 <Form className='card mb-2 card-body'>
                                     <div className='d-flex'>
                                         <label htmlFor="adjuster" className="form-label me-auto">Amount {isMultiplier ? 'multiplier' : ''}</label>
@@ -132,9 +136,14 @@ const RecipePage = () => {
                             )}
                         </Formik>
                     </div>
+                    {recipe.tags ? (<div className="mb-2">
+                        {(recipe.tags || []).map(tag => (
+                            <button className="badge tag bg-primary me-2" onClick={() => goToTag(tag)}>{tag}</button>
+                        ))}
+                    </div>) : null}
                     {recipe.makes ? (<h3 itemProp="recipeYield">Makes: {recipe.makes}</h3>) : null}
                     {recipe.ingredients.length ? (<>
-                        <h4 className='mt-2'>Ingredients</h4>
+                        <h4>Ingredients</h4>
                         <ul className='list-group'>
                             {recipe.ingredients.map((ingredient, index) => (
                                 <li key={`ingredient-${index}`} className='list-group-item' itemProp="recipeIngredient">{`${ingredient.amount ?? ''} ${ingredient.name ?? ''}`}</li>

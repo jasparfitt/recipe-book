@@ -43,9 +43,17 @@ const Header = () => {
   }
 
   return (
-    <nav className="navbar navbar-light bg-primary border-bottom border-dark border-3">
+    <nav className="navbar navbar-light bg-primary border-bottom border-dark border-3 mb-3">
       <div className="container">
         <button className="navbar-brand btn btn-link coook-brand" onClick={() => navigate('/home')}><RestaurantIcon className="me-1" /> Coook</button>
+        <ul className="navbar-nav flex-row me-auto">
+          <li className="nav-item">
+            <button className="btn btn-primary border-dark" onClick={() => navigate('/home')}>Home</button>
+          </li>
+          <li className="nav-item ms-2">
+            <button className="btn btn-primary border-dark" onClick={() => navigate('/tags')}>Tags</button>
+          </li>
+        </ul>
         <button className="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
           <span className="navbar-toggler-icon"></span>
         </button>

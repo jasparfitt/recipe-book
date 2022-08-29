@@ -6,6 +6,8 @@ import RecipePage from './pages/RecipePage';
 import EditRecipePage from './pages/EditRecipePage';
 import ExportPage from './pages/ExportPage';
 import ImportPage from './pages/ImportPage';
+import TagsPage from './pages/TagsPage';
+import TagPage from './pages/TagPage';
 import recipeService from './services/recipeService';
 import RequireStart from './components/RequireStart';
 import Header from './components/Header';
@@ -29,6 +31,8 @@ function App() {
               <Routes>
                 <Route path="/*" element={<StartPage />}/>
                 <Route path="/home" element={<RequireStart><HomePage /></RequireStart>}/>
+                <Route path="/tags" element={<RequireStart><TagsPage /></RequireStart>}/>
+                <Route path="/tag/:tag" element={<RequireStart><TagPage /></RequireStart>}/>
                 <Route path="/new-recipe" element={<RequireStart><NewRecipePage /></RequireStart>}/>
                 <Route path="/recipe/:id" element={<RequireStart><RecipePage /></RequireStart>}/>
                 <Route path="/edit-recipe/:id" element={<RequireStart><EditRecipePage /></RequireStart>}/>

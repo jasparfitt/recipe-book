@@ -40,6 +40,9 @@ const getRecipes = async () => {
     return recipes;
 }
 
+const getLocalRecipes = () => Object.values(Storage.get('recipes') || {})
+    .filter(r => r !== 'deleted');
+
 const saveRecipes = async (recipes) => {
     Storage.set('recipes', recipes);
 
@@ -54,19 +57,15 @@ const saveRecipes = async (recipes) => {
     }
 }
 
-const removeEmptyVals = (previous, current) => {
-    if (Object.values(current).join('').trim()) {
-        previous.push(current);
-    }
-
-    return previous;
-}
+const removeEmptyVals = (value) => Object.values(value).join('').trim();
+const formatTags = (tags) => tags.split(',').map(t => t.trim().toLowerCase()).filter(removeEmptyVals)
 
 const addNewRecipe = async (recipe) => {
     const recipes = Storage.get('recipes') || {};
     const uuid = uuidv4();
-    recipe.ingredients = recipe.ingredients.reduce(removeEmptyVals, []);
-    recipe.steps = recipe.steps.reduce(removeEmptyVals, []);
+    recipe.ingredients = recipe.ingredients.filter(removeEmptyVals);
+    recipe.steps = recipe.steps.filter(removeEmptyVals);
+    recipe.tags = formatTags(recipe.tags);
     recipe.id = uuid;
     console.log(recipe);
     recipes[uuid] = recipe;
@@ -76,8 +75,9 @@ const addNewRecipe = async (recipe) => {
 
 const updateRecipe = async (recipe, id) => {
     const recipes = Storage.get('recipes') || {};
-    recipe.ingredients = recipe.ingredients.reduce(removeEmptyVals, []);
-    recipe.steps = recipe.steps.reduce(removeEmptyVals, []);
+    recipe.ingredients = recipe.ingredients.filter(removeEmptyVals);
+    recipe.steps = recipe.steps.filter(removeEmptyVals);
+    recipe.tags = formatTags(recipe.tags);
     recipe.id = id;
     console.log(recipe);
     recipes[id] = recipe;
@@ -99,6 +99,7 @@ const recipeService = {
     loadRecipes,
     saveRecipes,
     getRecipes,
+    getLocalRecipes,
 };
 
 export default recipeService;
