@@ -25,7 +25,7 @@ function App() {
   return (
     <div>
       {!loading ? (
-          <BrowserRouter>
+          <BrowserRouter basename="/recipe-book">
             <Header />
             <div className="container mb-5">
               <Routes>
