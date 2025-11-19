@@ -7,6 +7,7 @@ export default defineConfig({
   build: {
     outDir: "build"
   },
+  base: "/recipe-book/",
   server: {
     strictPort: true,
     hmr: {
