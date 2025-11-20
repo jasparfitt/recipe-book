@@ -64,7 +64,7 @@ const Header = () => {
           </div>
           <div className="offcanvas-body">
             <ul className="navbar-nav justify-content-end flex-grow-1 pe-3">
-            <li className="nav-item">
+              <li className="nav-item">
                 <div className="form-check form-switch form-control-lg">
                   <input className="form-check-input" type="checkbox" role="switch" id="googleSwitch" onChange={changeDarkMode} checked={darkMode}/>
                   <label className="form-check-label fs-6" htmlFor="googleSwitch">Dark mode</label>
