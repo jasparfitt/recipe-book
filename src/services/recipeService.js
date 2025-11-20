@@ -2,6 +2,12 @@ import Storage from 'store2';
 import { v4 as uuidv4 } from 'uuid';
 import googleService from './googleService';
 
+const getDeleted = (recipes) => {
+    return Object.keys(recipes)
+        .filter( key => recipes[key] === 'deleted') 
+        .reduce( (res, key) => (res[key] = recipes[key], res), {} );
+}
+
 const loadRecipes = async () => {
     const googleEnabled = Storage.get('googleEnabled');
 
@@ -19,12 +25,6 @@ const loadRecipes = async () => {
             saveRecipes(newRecipes);
         }
     }
-}
-
-const getDeleted = (recipes) => {
-    return Object.keys(recipes)
-        .filter( key => recipes[key] === 'deleted') 
-        .reduce( (res, key) => (res[key] = recipes[key], res), {} );
 }
 
 const getRecipes = async () => {
@@ -96,6 +96,7 @@ const recipeService = {
     addNewRecipe,
     updateRecipe,
     deleteRecipe,
+    getDeleted,
     loadRecipes,
     saveRecipes,
     getRecipes,

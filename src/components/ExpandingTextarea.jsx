@@ -12,7 +12,7 @@ const ExpandingTextarea = ({ name, value, onChange }) => {
 
     return (
         <div className="form-control expand-background">
-            {`${value} `}
+            <span aria-hidden>{`${value} `}</span>
             <textarea 
                 name={name} 
                 {...field} 
