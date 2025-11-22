@@ -1,15 +1,18 @@
 import 'react-native-gesture-handler';
 import useGoogleInit from './hooks/useGoogleInit';
 import ContextWrapper from './components/ContextWrapper';
-import Main from './components/Main';
+import Main from './Main';
+import PlatformContextWrapper from './context/PlatformContextWrapper';
 
 const App = () => {
   useGoogleInit();
 
   return (
-    <ContextWrapper>
-      <Main />
-    </ContextWrapper>
+    <PlatformContextWrapper>
+      <ContextWrapper>
+        <Main />
+      </ContextWrapper>
+    </PlatformContextWrapper>
   );
 }
 

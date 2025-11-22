@@ -1,20 +1,20 @@
 import { Text, StatusBar } from 'react-native';
-import Header from './Header';
-import Menu from './Menu';
-import StartPage from '../pages/StartPage';
-import HomePage from '../pages/HomePage';
-import NewRecipePage from '../pages/NewRecipePage';
-import RecipePage from '../pages/RecipePage';
-import EditRecipePage from '../pages/EditRecipePage';
-import { useCallback, useContext } from 'react';
-import ExportRecipePage from '../pages/ExportRecipePage';
-import ImportRecipePage from '../pages/ImportRecipePage';
-import DarkModeContext from '../context/DarkModeContext';
+import Header from './components/Header';
+import Menu from './components/Menu';
+import StartPage from './pages/StartPage';
+import HomePage from './pages/HomePage';
+import NewRecipePage from './pages/NewRecipePage';
+import RecipePage from './pages/RecipePage';
+import EditRecipePage from './pages/EditRecipePage';
+import { useContext } from 'react';
+import ExportRecipePage from './pages/ExportRecipePage';
+import ImportRecipePage from './pages/ImportRecipePage';
+import DarkModeContext from './context/DarkModeContext';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import GoogleEnabledContext from '../context/GoogleEnabledContext';
+import GoogleEnabledContext from './context/GoogleEnabledContext';
 import { NavigationContainer } from '@react-navigation/native';
-import TagsPage from '../pages/TagsPage';
-import TagPage from '../pages/TagPage';
+import TagsPage from './pages/TagsPage';
+import TagPage from './pages/TagPage';
 
 const CommonColours = {
   primary: '#3EB489',

@@ -1,7 +1,5 @@
 import { Text, View, ScrollView } from 'react-native';
 import HeadingText from '../components/HeadingText';
-import { useContext, useState } from 'react';
-import RecipeContext from '../context/RecipeContext';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import BackButton from '../components/BackButton';
 import useStyles from '../hooks/useStyles';
@@ -13,21 +11,18 @@ import { Formik } from 'formik';
 import Button from '../components/Button';
 import TextField from '../components/TextField';
 import IconButton from '../components/IconButton';
-import unit from 'parse-unit';
+import useRecipePage from '../../shared/pages/useRecipePage';
 
-const RecipePage = ({route, navigation}) => {
+const RecipePage = ({ route, navigation }) => {
   const {
     screenContainer, flexFill, flexRow, py1, btnLink, px1, pt2, me2, mb1, mb2, tag, list, 
     listItem, listItemTop, myAuto, msAuto, dropdown, dropdownOption, card, mt2
   } = useStyles();
-  const {colors} = useTheme();
-  const [recipes, setRecipes] = useContext(RecipeContext);
+  const { colors } = useTheme();
   const [adjustPanel, setAdjustPanel] = useState(false);
-  const id = route.params.id;
-  const originalRecipe = recipes[id];
-  const [recipe, setRecipe] = useState(originalRecipe);
-  const amount = parseInt(originalRecipe.makes);
-  const isMultiplier = isNaN(amount) || amount.toString() !== originalRecipe.makes.trim();
+  const { 
+    recipe, validateForm, resetAdjuster, removeRecipe, isMultiplier
+  } = useRecipePage({ params: route.params });
 
   const itemStyle = (index) => {
     const isTop = index === 0;
@@ -39,7 +34,7 @@ const RecipePage = ({route, navigation}) => {
   }
 
   const deleteRecipe = () => {
-    setRecipes({...recipes, [id]: 'deleted'})
+    removeRecipe();
     navigation.navigate('Home')
   }
 
@@ -64,43 +59,6 @@ const RecipePage = ({route, navigation}) => {
       default:
         break;
     }
-  }
-
-  const validateForm = (values) => {
-    const adjust = parseFloat(values.adjust);
-    let multiplier = 1;
-
-    if (!isNaN(adjust)) {
-      if (isMultiplier) {
-        multiplier = adjust;
-      } else {
-        const originalAmount = parseInt(originalRecipe.makes);
-        multiplier = adjust / originalAmount;
-      }
-
-      const newRecipe = {...originalRecipe};
-      newRecipe.ingredients = originalRecipe.ingredients.map((ingredient) => {
-        const newIngredient = {...ingredient};
-        const [number, unitString] = unit(ingredient.amount);
-
-        if (!isNaN(number)) {
-          newIngredient.amount = `${parseFloat((number * multiplier).toPrecision(4))}${unitString}`
-        }
-        
-        return newIngredient;
-      });
-
-      if (!isMultiplier) {
-        newRecipe.makes = adjust;
-      }
-
-      setRecipe(newRecipe);
-    }
-  };
-
-  const resetAdjuster = (resetForm) => {
-    resetForm();
-    setRecipe(originalRecipe);
   }
 
   return recipe && recipe !== 'deleted' ? (

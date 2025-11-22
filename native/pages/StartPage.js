@@ -6,9 +6,9 @@ import GoogleEnabledContext from '../context/GoogleEnabledContext';
 import useStyles from '../hooks/useStyles';
 import ThemeText from '../components/ThemeText';
 
-const StartPage = ({navigation}) => {
+const StartPage = ({ navigation }) => {
   const [googleEnabled, setGoogleEnabled] = useContext(GoogleEnabledContext);
-  const {container, mb3, flexRow, meAuto, mb1} = useStyles();
+  const { container, mb3, flexRow, meAuto, mb1 } = useStyles();
     
   useEffect(() => {
     if (googleEnabled !== null) {
@@ -18,13 +18,13 @@ const StartPage = ({navigation}) => {
 
   const link = async () => {
     setGoogleEnabled(true);
-    // await recipeService.loadRecipes();
 
     navigation.navigate('Home')
   };
   
   const skip = () => {
     setGoogleEnabled(false);
+    
     navigation.navigate('Home')
   };
 

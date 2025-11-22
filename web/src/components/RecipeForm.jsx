@@ -1,59 +1,43 @@
-import { Form, Field, ErrorMessage, FieldArray } from 'formik';
+import { Form, Field, ErrorMessage, FieldArray, Formik } from 'formik';
 import MethodInput from './MethodInput';
 import IngredientInput from './IngredientInput';
-import React from 'react';
+import AutoChecker from '../../../shared/components/AutoChecker';
+import useRecipeForm from '../../../shared/components/useRecipeForm';
 
-const RecipeForm = ({ isSubmitting, formValues }) => {
-    const onListChange = (index, helper, values, isEmpty, defaultValue) => {
-        if (index === (values.length -1)) {
-            if (isEmpty(values[index])) {
-                helper.push(defaultValue);
-            }
-        } else if (values.length > 1) {
-            for (let i = values.length - 2; i >= 0; i--) {
-                if (!isEmpty(values[i])) {
-                    helper.remove(i);
-                } else {
-                    break;
-                }
-            }
-        }
-    };
+const RecipeForm = ({ recipe, onSubmit }) => {
+  const {
+    handleFormSubmit,
+    validateForm,
+    initialValues,
+    defaultIngredient,
+    defaultStep,
+    isObjectEmpty,
+    isStringEmpty,
+  } = useRecipeForm(recipe, onSubmit);
 
-    const onIngredientsChange = (index, helper, value) => {
-        const defaultValue = { amount: '', name: '' };
-        const isEmpty = value => Object.values(value).join('').trim();
-        formValues.ingredients[index] = {...formValues.ingredients[index], ...value}
+  const removeItem = (index, helper) => {
+    helper.remove(index);
+  };
 
-        onListChange(index, helper, formValues.ingredients, isEmpty, defaultValue);
-    }
-
-    const onStepsChange = (index, helper, value) => {
-        const defaultValue = '';
-        const isEmpty = value => value.trim();
-        formValues.steps[index] = value
-
-        onListChange(index, helper, formValues.steps, isEmpty, defaultValue);
-    }
-
-    const onTagsChange = (index, helper, value) => {
-        const defaultValue = '';
-        const isEmpty = value => value.trim();
-        formValues.tags[index] = value
-
-        onListChange(index, helper, formValues.tags, isEmpty, defaultValue);
-    }
-
-    const removeItem = (index, helper, values) => {
-        helper.remove(index);
-
-        if (values.length < 2) {
-            helper.push('')
-        }
-    };
-
-    return (
-        <Form>
+  return (
+    <Formik
+      validateOnBlur
+      initialValues={initialValues}
+      validate={validateForm}
+      onSubmit={handleFormSubmit}>
+      {({ isSubmitting, values }) => (
+        <>
+          <FieldArray
+            name="ingredients"
+            render={(arrayHelpers) => (
+              <AutoChecker helpers={arrayHelpers} name={'ingredients'} isEmpty={isObjectEmpty} defaultValue={defaultIngredient}/>
+            )} />
+          <FieldArray
+            name="steps"
+            render={(arrayHelpers) => (
+              <AutoChecker helpers={arrayHelpers} name={'steps'} isEmpty={isStringEmpty} defaultValue={defaultStep}/>
+            )} />
+          <Form>
             <label htmlFor="nameInput" className="h3 mt-2">Name</label>
             <Field as="input" name="recipeName" className="form-control" id="nameInput" autoComplete="off"/>
             <ErrorMessage name="recipeName" component="div" />
@@ -65,41 +49,42 @@ const RecipeForm = ({ isSubmitting, formValues }) => {
             <Field as="input" name="makes" className="form-control" id="makes" autoComplete="off"/>
             
             <div className="card mt-2">
-                <div className="card-body">
-                    <h3>Ingredients</h3>
-                    <FieldArray
-                        name="ingredients">
-                        {arrayHelpers => formValues.ingredients.map((v, index)=> (
-                            <IngredientInput 
-                                key={`ingredients-${index}`}
-                                index={index}
-                                onChange={(value) => onIngredientsChange(index, arrayHelpers, value)}
-                                remove={() => removeItem(index, arrayHelpers, formValues.ingredients)} />
-                        ))}
-                    </FieldArray>
-                </div>
+              <div className="card-body">
+                <h3>Ingredients</h3>
+                <FieldArray
+                  name="ingredients">
+                  {arrayHelpers => values.ingredients.map((_, index)=> (
+                    <IngredientInput 
+                      key={`ingredients-${index}`}
+                      index={index}
+                      remove={() => removeItem(index, arrayHelpers)} />
+                  ))}
+                </FieldArray>
+              </div>
             </div>
+
             <div className="card mt-2">
-                <div className="card-body">
-                    <h3>Method</h3>
-                    <FieldArray
-                        name="steps">
-                        {arrayHelpers => formValues.steps.map((v, index)=> (
-                            <MethodInput 
-                                key={`steps-${index}`}
-                                value={formValues.steps[index]} 
-                                index={index}
-                                onChange={(value) => onStepsChange(index, arrayHelpers, value)}
-                                remove={() => removeItem(index, arrayHelpers, formValues.steps)} />
-                        ))}
-                    </FieldArray>
-                </div>
+              <div className="card-body">
+                <h3>Method</h3>
+                <FieldArray
+                  name="steps">
+                  {arrayHelpers => values.steps.map((_, index)=> (
+                    <MethodInput 
+                      key={`steps-${index}`}
+                      index={index}
+                      remove={() => removeItem(index, arrayHelpers)} />
+                  ))}
+                </FieldArray>
+              </div>
             </div>
             <button type="submit" className="btn btn-primary mt-3" disabled={isSubmitting}>
-                Save
+              Save
             </button>
-        </Form>
-    );
+          </Form>
+        </>
+      )}
+    </Formik>
+  );
 };
 
 export default RecipeForm;

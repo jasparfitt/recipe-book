@@ -1,11 +1,12 @@
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import store from 'store2';
 import googleService from '../services/googleService';
-import html2pdf from 'html-to-pdf-js';
 import { useNavigate, useParams } from 'react-router-dom';
 import './ExportPage.scss';
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import saveAs from 'file-saver';
+import ReactPDF from '@react-pdf/renderer';
+import RecipePdf from '../components/RecipePdf';
 
 const ExportPage = () => {
   const selectAll = useRef();
@@ -85,20 +86,18 @@ const ExportPage = () => {
 
       await googleService.createFile(html, name);
     } else if (values.type === 'pdf') {
-      const options = {
-        margin: 25, 
-        pagebreak: { after: '.afterClass', avoid: ['div', 'h1', 'h2', 'em', 'li']}, 
-        filename: name
-      };
-
-      await html2pdf().set(options).from(htmlArray.join(values.newPage ? '<hr style="visibility: hidden" class="afterClass">' : '<hr>')).save();
+      await ReactPDF.render(<Document>
+        {chosenRecipes.map((recipe) => (
+          <RecipePdf key={recipe.id} recipe={recipe} />
+        ))}
+      </Document>, `${name}.pdf`);
     } else if (values.type === 'json') {
       const content = JSON.stringify(chosenRecipes);
       const filename = `${name}.json`;
 
       const blob = new Blob([content], {
         type: "text/plain;charset=utf-8"
-      });
+      }); 
 
       saveAs(blob, filename);
     }

@@ -1,30 +1,25 @@
 import { SectionList, Text, View } from 'react-native';
-import React from 'react';
 import TextField from './TextField';
 import HeadingText from './HeadingText';
-import { ErrorMessage, FieldArray, Formik } from 'formik';
+import { FieldArray, Formik } from 'formik';
 import Button from './Button';
-import AutoChecker from './AutoChecker';
 import IngredientsField from './IngredientsField';
 import MethodField from './MethodField';
 import useStyles from '../hooks/useStyles';
+import AutoChecker from '../../shared/components/AutoChecker';
+import useRecipeForm from '../../shared/components/useRecipeForm';
 
 const RecipeForm = ({ recipe, onSubmit }) => {
-  const {mb3, mb2, mt2, errorMessage, errorInput} = useStyles();
-  const defaultIngredient = { amount: '', name: '' };
-  const defaultStep = '';
-  const isObjectEmpty = (value) => !Object.values(value).join('').trim();
-  const isStringEmpty = (value) => !value;
-  const formatTags = (tags) => tags.split(',').map(t => t.trim().toLowerCase()).filter((i) => !isStringEmpty(i));
-
-  const initialValues = {
-    ...recipe,
-    steps: (recipe.steps || []),
-    ingredients: (recipe.ingredients || []),
-    tags: (recipe.tags || []).join(', '),
-    steps: [...(recipe.steps || []), defaultStep],
-    ingredients: [...(recipe.ingredients || []), defaultIngredient],
-  };
+  const { mb3, mb2, mt2, errorMessage, errorInput } = useStyles();
+  const {
+    handleFormSubmit,
+    validateForm,
+    initialValues,
+    defaultIngredient,
+    defaultStep,
+    isObjectEmpty,
+    isStringEmpty,
+  } = useRecipeForm(recipe, onSubmit);
 
   const data = (values) => [{
     header: 'Name',
@@ -52,29 +47,13 @@ const RecipeForm = ({ recipe, onSubmit }) => {
     data: [''],
   }];
 
-  const convertValues = (values) => ({
-    ...values,
-    ingredients: values.ingredients.filter((i) => !isObjectEmpty(i)),
-    steps: values.steps.filter((i) => !isStringEmpty(i)),
-    tags: formatTags(values.tags),
-  })
-
-  const validateForm = (values) => {
-    const errors = {};
-
-    if (!values.recipeName) {
-      errors.recipeName = 'Required';
-    }
-
-    return errors;
-  }
-
   return (
     <Formik 
-      initialValues={initialValues} 
-      onSubmit={(values) => onSubmit(convertValues(values))}
-      validate={validateForm}>
-      {({isSubmitting, values, errors, touched, handleSubmit}) => (
+      validateOnBlur
+      initialValues={initialValues}
+      validate={validateForm}
+      onSubmit={handleFormSubmit}>
+      {({ isSubmitting, values, errors, touched, handleSubmit }) => (
         <>
           <FieldArray
             name="ingredients"
@@ -89,7 +68,7 @@ const RecipeForm = ({ recipe, onSubmit }) => {
           <SectionList
             sections={data(values)}
             keyExtractor={(item, index) => item + index}
-            renderItem={({item, section: {multiline, isButton, type, baseName}, index}) => {
+            renderItem={({item, section: { multiline, isButton, type, baseName }, index}) => {
               if (isButton) {
                 return <View><Button variant="Primary" disabled={isSubmitting} style={{...mb3, ...mt2}} onPress={handleSubmit}>Save</Button></View>
               }
@@ -106,12 +85,12 @@ const RecipeForm = ({ recipe, onSubmit }) => {
 
               return (
                 <>
-                  <TextField multiline={multiline} extraStyle={{...mb2, ...(errors[name] && touched[name] ? errorInput : {})}} name={name}/>
+                  <TextField multiline={multiline} extraStyle={{ ...mb2, ...(errors[name] && touched[name] ? errorInput : {}) }} name={name}/>
                   {errors[name] && touched[name] ? <Text style={errorMessage} name={name}>required</Text> : null}
                 </>
               );
             }}
-            renderSectionHeader={({section: {header}}) => header ? (<HeadingText level="h3">{header}</HeadingText>) : null}
+            renderSectionHeader={({ section: { header } }) => header ? (<HeadingText level="h3">{header}</HeadingText>) : null}
           />
         </>
       )}

@@ -1,18 +1,15 @@
-import React from 'react';
 import { View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import useStyles from '../hooks/useStyles';
 import TextInput from './TextInput';
 
-const SearchBar = ({setList, fullList, searchKey, style}) => {
-  const {flexRow, flexFill, text, groupEnd, pyAuto, searchIcon, dFlex, myAuto, p1} = useStyles();
+const SearchBar = ({ setSearchTerm, style }) => {
+  const {
+    flexRow, flexFill, text, groupEnd, pyAuto, searchIcon, dFlex, myAuto, p1
+  } = useStyles();
 
   const onSearchChange = (value) => {
-    const searchResults = fullList.filter(item => {
-      return item[searchKey].toLowerCase().search(value.toLowerCase()) !== -1
-    });
-    
-    setList(searchResults);
+    setSearchTerm(value);
   };
 
   return (

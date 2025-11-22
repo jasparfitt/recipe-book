@@ -1,25 +1,25 @@
-import { useCallback } from "react";
+import { useCallback, useContext } from "react";
 import useRecipesExists from "./useRecipesExists";
 import useSaveStorageValue from "./useSaveStorageValue";
-import { MimeTypes } from "@robinbobin/react-native-google-drive-api-wrapper";
-import useGDrive from "./useGDrive";
+import { mimeTypes } from "@robinbobin/mimetype-constants";
+import GDriveContext from "../context/GDriveContext";
 
-const useSaveRecipes = (googleEnabled, promise) => {
+const useSaveRecipes = (googleEnabled) => {
   const [saveStorageValue] = useSaveStorageValue('@recipes');
   const [recipesExists] = useRecipesExists();
-  const [getGDrive] = useGDrive();
+  const getGDrive = useContext(GDriveContext);
 
   const saveRecipes = useCallback(async (recipes) => {
     await saveStorageValue(recipes);
-    await promise;
 
     if (googleEnabled) {
+      console.log('Saving recipes to Google Drive...');
       const file = await recipesExists();
       const fileContent = JSON.stringify(recipes);
       const gDrive = await getGDrive();
 
       let uploader = gDrive.files.newMultipartUploader()
-        .setData(fileContent, MimeTypes.JSON);
+        .setData(fileContent, mimeTypes.JSON);
 
       if (file) {
         uploader = uploader.setIdOfFileToUpdate(file.id);
