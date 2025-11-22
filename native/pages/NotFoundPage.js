@@ -4,7 +4,7 @@ import HeadingText from "../components/HeadingText";
 import useStyles from "../hooks/useStyles";
 
 const NotFoundPage = () => {
-  const {screenContainer} = useStyles();
+  const { screenContainer } = useStyles();
 
   return (
     <View style={screenContainer}>

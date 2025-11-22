@@ -1,5 +1,4 @@
 import { useField } from 'formik';
-import React from 'react';
 
 const FileUpload = ({ name, id, value }) => {
   const [fileField, meta, helpers] = useField({name: name, value:''});

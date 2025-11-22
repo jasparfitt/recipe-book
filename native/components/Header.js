@@ -8,8 +8,8 @@ import IconButton from './IconButton';
 import RecipeContext from '../context/RecipeContext';
 
 const Header = ({navigation}) => {
-  const {navbar, container, mb3, flexRow, logoText, myAuto, headerButton, py1, msAuto, ms2, me2, flexFill, errorMessage, errorBorder} = useStyle();
-  const {colors} = useTheme();
+  const { navbar, container, mb3, flexRow, logoText, myAuto, headerButton, py1, msAuto, ms2, me2, flexFill, errorMessage, errorBorder } = useStyle();
+  const { colors } = useTheme();
   const [_1,_2, error, setError] = useContext(RecipeContext);
 
   return (<>

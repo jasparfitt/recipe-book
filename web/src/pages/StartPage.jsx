@@ -1,43 +1,37 @@
-import googleService from '../services/googleService';
-import recipeService from '../services/recipeService';
-import Storage from 'store2';
-import { useNavigate } from "react-router-dom";
-import React, { useEffect } from 'react';
+import { Navigate, useNavigate } from "react-router-dom";
+import { useContext, useEffect } from 'react';
+import GoogleEnabledContext from '../../../shared/context/GoogleEnabledContext';
 
 const StartPage = () => {
-    const navigate = useNavigate();
+  const [googleEnabled, setGoogleEnabled] = useContext(GoogleEnabledContext);
+  const navigate = useNavigate();
+
+  const link = async () => {
+    setGoogleEnabled(true);
+
+    navigate('/home')
+  };
+  
+  const skip = () => {
+    setGoogleEnabled(false);
     
-    useEffect(() => {
-        const googleEnabled = Storage.get('googleEnabled');
+    navigate('/home')
+  };
 
-        if (googleEnabled !== null) {
-            navigate('/home');
-        }
-    }, [navigate]);
+  if (googleEnabled !== null) {
+    return <Navigate to="/home" />;
+  }
 
-    const link = async () => {
-        await googleService.init();
-        Storage.add('googleEnabled', true);
-        await recipeService.loadRecipes();
-
-        navigate('/home')
-    };
-    
-    const skip = () => {
-        Storage.add('googleEnabled', false);
-        navigate('/home')
-    };
-
-    return (
-        <div className="row">
-            <div className="col-lg-8">
-                <h1>Recipe Book</h1>
-                <p>Connect to Google to backup and view your recipes on other devices</p>
-                <button onClick={link} className="btn btn-primary">Link to Google</button>
-                <button onClick={skip} className="btn btn-link">Skip this step</button>
-            </div>
-        </div>
-    );
+  return (
+    <div className="row">
+      <div className="col-lg-8">
+        <h1>Recipe Book</h1>
+        <p>Connect to Google to backup and view your recipes on other devices</p>
+        <button onClick={link} className="btn btn-primary">Link to Google</button>
+        <button onClick={skip} className="btn btn-link">Skip this step</button>
+      </div>
+    </div>
+  );
 }
 
 export default StartPage;

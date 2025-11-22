@@ -2,7 +2,7 @@ import { Pressable, Text, View } from 'react-native';
 import useStyles from '../hooks/useStyles';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-const IconButton = ({onPress, style, variant, outerStyle, iconName, iconSize, iconStyle, ...props}) => {
+const IconButton = ({ onPress, style, variant, outerStyle, iconName, iconSize, iconStyle, ...props }) => {
   const styles = useStyles()
 
   const combinedStyle = (pressed) => ({

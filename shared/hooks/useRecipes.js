@@ -4,7 +4,7 @@ import useSaveStorageValue from './useSaveStorageValue';
 import useStorageValue from './useStorageValue';
 
 const useRecipes = (googleEnabled, googleLoading) => {
-  const {data: localRecipes, loading: recipesLoading} = useStorageValue('@recipes');
+  const { data: localRecipes, loading: recipesLoading } = useStorageValue('@recipes');
   const [saveRecipes] = useSaveStorageValue('@recipes');
   const [getRecipesFile] = useGetRecipesFile();
   const [data, setData] = useState(null);

@@ -7,7 +7,6 @@ import LinkButton from './LinkButton';
 import useStyles from '../hooks/useStyles';
 import ThemeText from './ThemeText';
 import IconButton from './IconButton';
-import { useTheme } from '@react-navigation/native';
 import Switch from './Switch';
 
 const Menu = ({ navigation }) => {

@@ -1,10 +1,9 @@
-import { useCallback } from "react";
-import useGDrive from "./useGDrive";
-import useHook from "./useHook";
+import { useCallback, useContext } from "react";
 import useRecipesExists from "./useRecipesExists";
+import GDriveContext from "../context/GDriveContext";
 
 const useGetRecipesFile = () => {
-  const [getGDrive] = useGDrive();
+  const getGDrive = useContext(GDriveContext);
   const [recipesExists] = useRecipesExists();
 
   const getRecipesFile = useCallback(async () => {

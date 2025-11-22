@@ -3,9 +3,9 @@ import TextField from "./TextField";
 import RemoveButton from "./RemoveButton";
 import useStyles from "../hooks/useStyles";
 
-const IngredientsField = ({baseName, index, extraStyle}) => {
-  const {flexRow, groupStart, groupEnd} = useStyles();
-  const name = `${baseName}[${index}]`
+const IngredientsField = ({ baseName, index, extraStyle }) => {
+  const { flexRow, groupStart, groupEnd } = useStyles();
+  const name = `${baseName}[${index}]`;
 
   return (
     <View style={{...extraStyle, ...flexRow}}>

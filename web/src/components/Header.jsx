@@ -1,45 +1,30 @@
 import { useNavigate } from 'react-router-dom';
-import React, { useState, useEffect } from 'react';
-import Storage from 'store2';
-import recipeService from '../services/recipeService';
+import { useContext, useEffect } from 'react';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
+import GoogleEnabledContext from "../../../shared/context/GoogleEnabledContext";
+import DarkModeContext from '../../../shared/context/DarkModeContext';
 
 const Header = () => {
   const navigate = useNavigate();
-  const [googleEnabled, setGoogleEnabled] = useState(Storage.get('googleEnabled'));
-  const [darkMode, setDarkMode] = useState(Storage.get('darkMode') ?? false);
+  const [googleEnabled, setGoogleEnabled] = useContext(GoogleEnabledContext);
+  const [darkMode, setDarkMode] = useContext(DarkModeContext);
 
-  const setDarkClass = () => {
+  useEffect(() => {
     if (darkMode) {
       document.body.classList.add('dark');
     } else {
       document.body.classList.remove('dark');
     }
-  }
-
-  useEffect(() => {
-    setDarkClass();
-  }, [setDarkClass]);
+  }, [darkMode]);
 
   const changeGoogleState = async () => {
     const newGoogleState = !googleEnabled;
-    Storage.set('googleEnabled', newGoogleState);
     setGoogleEnabled(newGoogleState);
-
-    if (newGoogleState) {
-      const googleRecipes = await recipeService.getRecipes();
-      const googleDeleted = getDeleted(googleRecipes);
-      const localRecipes = Storage.get('recipes');
-
-      recipeService.saveRecipes({...googleRecipes, ...localRecipes, ...googleDeleted})
-    }
   }
 
   const changeDarkMode = () => {
     const newDarkMode = !darkMode;
-    Storage.set('darkMode', newDarkMode);
     setDarkMode(newDarkMode);
-    setDarkClass();
   }
 
   return (

@@ -1,45 +1,37 @@
-import recipeService from '../services/recipeService';
-import { Formik } from 'formik';
+import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
 import RecipeForm from '../components/RecipeForm';
 import BackButton from '../components/BackButton';
-import React from 'react';
+import RecipeContext from '../../../shared/context/RecipeContext';
+import { useContext } from 'react';
 
 const NewRecipePage = () => {
-    const navigate = useNavigate();
+  const [recipes, setRecipes] = useContext(RecipeContext);
+  const navigate = useNavigate();
 
-    const validateForm = values => {
-        const errors = {};
+  const onSubmit = async (value) => {
+    const id = uuidv4();
+    await setRecipes({...recipes, [id]: {...value, id}});
+    navigate('/home')
+  }
 
-        if (!values.recipeName) {
-            errors.recipeName = 'Required';
-        }
-
-        return errors;
-    }
-
-    const save = async (values, { setSubmitting }) => {
-        await recipeService.addNewRecipe(values);
-        navigate('/home');
-    }
-
-    return (
-        <div className="row">
-            <h1>New Recipe</h1>
-            <div className="col-lg-8">
-                <BackButton/>
-                <Formik
-                    validateOnBlur
-                    initialValues={{ recipeName: '', makes: '', ingredients: [{}], steps: [''], tags: [''] }}
-                    validate={validateForm}
-                    onSubmit={save}>
-                    {({ isSubmitting, values }) => (
-                        <RecipeForm isSubmitting={isSubmitting} formValues={values} />
-                    )}
-                </Formik>
-            </div>
-        </div>
-    );
+  return (
+    <div className="row">
+      <h1>New Recipe</h1>
+      <div className="col-lg-8">
+        <BackButton/>
+        <RecipeForm 
+          recipe={{
+            recipeName: '',
+            makes: '',
+            ingredients: [{}],
+            steps: [''],
+            tags: ['']
+          }}
+          onSubmit={onSubmit}/>
+      </div>
+    </div>
+  );
 }
 
 export default NewRecipePage;
