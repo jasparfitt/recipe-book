@@ -36,13 +36,16 @@ jobs:
       
     - name: Build
       run: |
+        cd shared
+        npm install
+        cd ../web
         npm install
         npm run build
         
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v3
       with:
-        path: './build'
+        path: './web/build'
   deploy:
     environment:
       name: github-pages
