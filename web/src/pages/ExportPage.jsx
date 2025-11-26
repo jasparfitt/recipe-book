@@ -1,67 +1,32 @@
 import { Formik, Field, Form, ErrorMessage } from 'formik';
-import store from 'store2';
-import googleService from '../services/googleService';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import './ExportPage.scss';
-import { useRef } from 'react';
+import { useContext } from 'react';
 import saveAs from 'file-saver';
-import ReactPDF from '@react-pdf/renderer';
-import RecipePdf from '../components/RecipePdf';
+import RecipeContext from "../../../shared/context/RecipeContext";
+import GDriveContext from "../../../shared/context/GDriveContext";
+import useOrderByKey from '../../../shared/hooks/useOrderByKey';
+import SelectAllCheckbox from '../components/SelectAllCheckbox';
+import { jsPDF } from "jspdf";
 
 const ExportPage = () => {
-  const selectAll = useRef();
-  const navigate = useNavigate();
+  const [recipes] = useContext(RecipeContext);
+  const getGDrive = useContext(GDriveContext);
+  const orderByRecipeName = useOrderByKey('recipeName');
   const params = useParams();
   const initialRecipes = params.id ? [params.id] : [];
-  const initialValues = {type: 'googleDoc', newPage: true, recipes: initialRecipes, name: 'Recipes - Coook'};
-  const recipes = Object.values(store.get('recipes') || {})
-    .filter(r => r !== 'deleted')
-    .sort((a, b) => {
-      if (a.recipeName === b.recipeName) {
-        return 0;
-      } else if (a.recipeName < b.recipeName) {
-        return -1;
-      } else {
-        return 1;
-      }
-    });
-
-  const updateSelectAllAndName = (value, touched, values, setFieldValue) => {
-    if (value === values.recipes) {
-      // no change no need to check
-      return;
-    }
-
-    if (value.length === recipes.length) {
-      selectAll.current.checked = true;
-      selectAll.current.indeterminate = false;
-    } else if (value.length === 0) {
-      selectAll.current.checked = false;
-      selectAll.current.indeterminate = false;
-    } else {
-      selectAll.current.indeterminate = true;
-    }
-
-    if (!touched.name) {
-      let newName = initialValues.name;
-
-      if(value.length === recipes.length) {
-        newName = 'All Recipes - Coook'
-      } else if (value.length === 1) {
-        newName = recipes.filter(recipe => recipe.id === value[0])[0].recipeName + ' - Coook';
-      }
-      
-      if (values.name !== newName) {
-        setFieldValue('name', newName)
-      }
-    }
-  };
+  const initialValues = { type: 'googleDoc', newPage: true, recipes: initialRecipes, name: 'Recipes - Coook' };
+  
+  const recipeList = Object.values(recipes || {})
+    .filter((r) => r !== 'deleted')
+    .sort(orderByRecipeName);
+  const allRecipesSelectedValue = recipeList.map(recipe => recipe.id);
 
   const save = async (values, {setSubmitting}) => {
     setSubmitting(true);
     
     const name = values.name;
-    const chosenRecipes = recipes.filter(recipe => values.recipes.includes(recipe.id));
+    const chosenRecipes = recipeList.filter(recipe => values.recipes.includes(recipe.id));
     const htmlArray = chosenRecipes.map(recipe => {
       const ingredientsString = recipe.ingredients.map(ingredient => {
         return `<div>${ingredient.amount ?? ''} ${ingredient.name ?? ''}</div>`
@@ -72,8 +37,8 @@ const ExportPage = () => {
       }).join('');
 
       return `
-        <h1>${recipe.recipeName}</h1>
-        ${recipe.makes ? `<em>Makes: ${recipe.makes}</em>` : ''}
+        <h1 style="break-before: page;">${recipe.recipeName}</h1>
+        ${recipe.makes ? `<div><em>Makes : ${recipe.makes}</em></div>` : ''}
         <h2>Ingredients</h2>
         ${ingredientsString}
         <h2>Method</h2>
@@ -84,13 +49,45 @@ const ExportPage = () => {
     if (values.type === 'googleDoc') {
       const html = htmlArray.join(values.newPage ? '<hr class="pb">' : '<hr>');
 
-      await googleService.createFile(html, name);
+      const gDrive = await getGDrive();
+      const uploader = gDrive.files.newMultipartUploader()
+        .setData(html, 'text/html')
+        .setRequestBody({ name, mimeType: 'application/vnd.google-apps.document' });
+      
+      const data = await uploader.execute();
+      window.open(`https://docs.google.com/document/d/${data.id}`, '_blank', 'noopener,noreferrer');
     } else if (values.type === 'pdf') {
-      await ReactPDF.render(<Document>
-        {chosenRecipes.map((recipe) => (
-          <RecipePdf key={recipe.id} recipe={recipe} />
-        ))}
-      </Document>, `${name}.pdf`);
+      var doc = new jsPDF({
+        unit: 'mm',
+        format: 'a4'
+      });
+
+      let htmlForloop = htmlArray;
+
+      if (!values.newPage) {
+        let allHtml = htmlArray.join('<hr>');
+        allHtml = `<div style="color: black;">${allHtml}</div>`;
+        htmlForloop = [allHtml];
+      }
+
+      for (let i = 0; i < htmlForloop.length; i++) {
+        const html = htmlForloop[i];
+        const margin = 25.4;
+        const height = doc.internal.pageSize.getHeight() - (margin * 2);
+        const width = doc.internal.pageSize.getWidth() - (margin * 2);
+        const scaledWidth = width * 4;
+        const startPage = i > 0 ? doc.internal.getNumberOfPages() : 0;
+
+        await doc.html(`<div style="color: black;">${html}</div>`, {
+          callback: (pdf) => pdf,
+          y: height * startPage,
+          margin: margin,
+          width,
+          windowWidth: scaledWidth
+        });        
+      }
+
+      doc.save(`${name}.pdf`);
     } else if (values.type === 'json') {
       const content = JSON.stringify(chosenRecipes);
       const filename = `${name}.json`;
@@ -101,18 +98,6 @@ const ExportPage = () => {
 
       saveAs(blob, filename);
     }
-
-    navigate('/home');
-  };
-
-  const changeSelectAll = (e, setFieldValue) => {
-    let newRecipes = [];
-
-    if (e.target.checked) {
-      newRecipes = recipes.map(recipe => recipe.id);
-    }
-
-    setFieldValue('recipes', newRecipes);
   };
 
   const validate = (values) => {
@@ -162,16 +147,11 @@ const ExportPage = () => {
               <div className="text-danger">
                 <ErrorMessage name="recipes" />
               </div>
-              <div className="form-check mx-1">
-                <input ref={selectAll} className="form-check-input" onChange={(e) =>changeSelectAll(e, setFieldValue)} type="checkbox" name="recipes" id="selectAll"/>
-                <label className="form-check-label" htmlFor="selectAll">
-                  Select All
-                </label>
-              </div>
+              <SelectAllCheckbox keyName="recipes" allCount={allRecipesSelectedValue.length} allSelectedValue={allRecipesSelectedValue} />
               <div className="recipeCheckList">
-                {recipes.map((recipe, index) => (
+                {recipeList.map((recipe, index) => ( 
                   <div className="form-check mx-1" key={`recipe-check-${index}`}>
-                    <Field className="form-check-input" validate={(value) => updateSelectAllAndName(value, touched, values, setFieldValue)} type="checkbox" name="recipes" value={recipe.id} id={`recipeCheck${index}`} />
+                    <Field className="form-check-input" type="checkbox" name="recipes" value={recipe.id} id={`recipeCheck${index}`} />
                     <label className="form-check-label" htmlFor={`recipeCheck${index}`}>
                       {recipe.recipeName}
                     </label>

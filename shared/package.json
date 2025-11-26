@@ -1,6 +1,8 @@
 {
+  "name": "coook.shared",
   "dependencies": {
-    "@robinbobin/mimetype-constants": "^2.0.2",
-    "parse-unit": "^1.0.1"
+    "parse-unit": "^1.0.1",
+    "formik": "^2.2.9",
+    "react": "^19.0.0"
   }
 }

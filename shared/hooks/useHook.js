@@ -1,4 +1,4 @@
-import { useState, useCallback} from 'react';
+import { useState, useCallback } from 'react';
 
 const useHook = (initialLoading) => {
   const [data, setData] = useState(null);

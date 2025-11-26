@@ -1,15 +1,15 @@
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import './ExportPage.scss';
-import React from 'react';
 import FileUpload from '../components/FileUpload';
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from "react-router-dom";
-import store from 'store2';
-import recipeService from '../services/recipeService';
+import { useContext } from 'react';
+import RecipeContext from '../../../shared/context/RecipeContext';
 
 const ImportPage = () => {
   const initialValues = { type: 'json', file: ''};
   const navigate = useNavigate();
+  const [currentRecipes, setRecipes] = useContext(RecipeContext);
 
   const readJsonFile = async (file) => {
     const reader = new FileReader();
@@ -23,7 +23,7 @@ const ImportPage = () => {
           }
 
           resolve(res);
-        } catch {
+        } catch {  
           reject();
         }
       });
@@ -34,51 +34,27 @@ const ImportPage = () => {
     return await fileReadPromise;
   }
 
+  const isOneOf = (value, types) => value && types.includes(typeof value);
+  const isType = (value, type) => isOneOf(value, [type]);
+
+  const asOneOf = (value, types, defaultValue = null) => isOneOf(value, types) ? value : defaultValue;
+  const asType = (value, type, defaultValue = null) => isType(value, type) ? value : defaultValue;
+
+  const asArray = (value) => Array.isArray(value) ? value : [];
+  const asArrayOfType = (value, type) => asArray(value).filter((item) => isType(item, type));
+
   const makeRecipe = (input) => {
     const recipe = {}
-    recipe.recipeName = input.recipeName;
+    recipe.recipeName = asType(input?.recipeName, 'string', 'Untitled Recipe');
 
-    if (input.id && typeof input.id === 'string') {
-      recipe.id = input.id
-    } else {
-      recipe.id = uuidv4();
-    }
-
-    if (input.makes && (typeof input.makes === 'string' || typeof input.makes === 'number')) {
-      recipe.makes = input.makes;
-    }
-
-    if (input.steps && Array.isArray(input.steps)) {
-      recipe.steps = input.steps.reduce((prev, cur) => {
-        if (cur && typeof cur === 'string') {
-          prev.push(cur);
-        }
-
-        return prev;
-      }, []);
-    }
-
-    if (input.ingredients && Array.isArray(input.ingredients)) {
-      recipe.ingredients = input.ingredients.reduce((prev, cur) => {
-        if (cur) {
-          const ingredient = {};
-
-          if (cur.amount && typeof cur.amount === 'string') {
-            ingredient.amount = cur.amount;
-          }
-
-          if (cur.name && typeof cur.name === 'string') {
-            ingredient.name = cur.name;
-          }
-
-          if (ingredient.name || ingredient.amount) {
-            prev.push(ingredient);
-          }
-        }
-
-        return prev;
-      }, []);
-    }
+    recipe.id = asType(input?.id, 'string', uuidv4());
+    recipe.makes = asOneOf(input.makes, ['string', 'number']);
+    recipe.tags = asArrayOfType(input?.tags, 'string');
+    recipe.steps = asArrayOfType(input?.steps, 'string');
+    recipe.ingredients = asArray(input?.ingredients).map((i) => ({
+      amount: asType(i?.amount, 'string'),
+      name: asType(i?.name, 'string'),
+    })).filter((i) => i.name || i.amount);    
 
     return recipe;
   }
@@ -98,10 +74,9 @@ const ImportPage = () => {
   const save = async (values) => {
     const loadedRecipes = await readJsonFile(values.file);
     const parsedRecipes = recipeArrayToObj(loadedRecipes);
-    const currentRecipes = store.get('recipes');
     
     const mergedRecipes = {...currentRecipes, ...parsedRecipes};
-    await recipeService.saveRecipes(mergedRecipes);
+    setRecipes(mergedRecipes);
 
     navigate('/home');
   };
@@ -143,7 +118,7 @@ const ImportPage = () => {
           initialValues={initialValues}
           validate={validate}
           onSubmit={save}>
-          {({ isSubmitting, values, setFieldValue, touched }) => (
+          {({ isSubmitting }) => (
             <Form>
               <div className="btn-group mb-2" role="group" aria-label="choose export type">
                 <Field type="radio" className="btn-check" name="type" id="jsonType" value="json"

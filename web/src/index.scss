@@ -20,7 +20,7 @@ $light: #FFFAEB;
   --bs-body-bg: #{$white};
 
   .form-control,
-  .form-control:focus {
+  .form-control:focus {   
     background-color: $white;
     color: $black;
   }
@@ -57,6 +57,18 @@ $light: #FFFAEB;
 
   .border-dark {
     border-color: $black !important;
+  }
+
+  .input-group-text {
+    color: $white;
+  }
+
+  input::file-selector-button {
+    color: $white;
+  }
+
+  ::placeholder {
+    color: $black !important;
   }
 }
 

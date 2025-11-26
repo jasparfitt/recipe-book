@@ -1,7 +1,6 @@
 import { useCallback, useContext } from "react";
 import useRecipesExists from "./useRecipesExists";
 import useSaveStorageValue from "./useSaveStorageValue";
-import { mimeTypes } from "@robinbobin/mimetype-constants";
 import GDriveContext from "../context/GDriveContext";
 
 const useSaveRecipes = (googleEnabled) => {
@@ -13,13 +12,12 @@ const useSaveRecipes = (googleEnabled) => {
     await saveStorageValue(recipes);
 
     if (googleEnabled) {
-      console.log('Saving recipes to Google Drive...');
       const file = await recipesExists();
       const fileContent = JSON.stringify(recipes);
       const gDrive = await getGDrive();
 
       let uploader = gDrive.files.newMultipartUploader()
-        .setData(fileContent, mimeTypes.JSON);
+        .setData(fileContent, 'application/json');
 
       if (file) {
         uploader = uploader.setIdOfFileToUpdate(file.id);

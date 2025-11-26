@@ -1,7 +1,6 @@
 import { useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import stringService from '../services/stringService';
-import recipeService from '../services/recipeService';
 import RecipeList from '../components/RecipeList';
 import SearchBar from '../components/SearchBar';
 import useTagPage from '../../../shared/pages/useTagPage';

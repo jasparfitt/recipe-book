@@ -13,7 +13,6 @@ const useGDrive = () => {
   
     const newGDrive = new GDrive();
     newGDrive.accessToken = (await GoogleSignin.getTokens()).accessToken
-
     return newGDrive;
   }, []);
 

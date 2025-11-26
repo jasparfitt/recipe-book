@@ -22,7 +22,7 @@ const useRecipeContextData = (googleEnabled, googleLoading) => {
 
   const setCurrentRecipes = useCallback(async (newRecipes) => {
     try {
-      await saveRecipes(newRecipes);
+      saveRecipes(newRecipes);
       setRecipes(newRecipes);
     } catch (e) {
       setErrorMessage(e)

@@ -7,7 +7,9 @@ const useGDrive = () => {
 
   const makeCall = useCallback(async (callback) => {
     try {
-      return await callback();
+      const res = await callback();
+      
+      return res;
     } catch (e) {
       try {
         if (e.status === 401 || e.status === 403) {
@@ -82,12 +84,14 @@ const useGDrive = () => {
           metadata = { ...metadata, ...uploader.requestBody };
         }
 
-        const form = getForm(metadata, uploader.data);
+        const form = getForm(metadata, uploader.data, uploader.mimeType);
 
-        return await makeCall(() => fetch(`${googleConfig.FILES_URL}${path}?uploadType=multipart&fields=id`, {
+        const res = await makeCall(() => fetch(`${googleConfig.FILES_URL}${path}?uploadType=multipart&fields=id`, {
           ...form,
           method,
         }));
+
+        return await res.json();
       }
     }
 

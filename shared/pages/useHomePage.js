@@ -6,6 +6,7 @@ const useHomePage = (extraFilter = null) => {
   const [recipesObject] = useContext(RecipeContext);
   const [searchTerm, setSearchTerm] = useState('');
   const orderByRecipeName = useOrderByKey('recipeName');
+
   const allRecipes = useMemo(() => (
     Object.values(recipesObject || {})
       .filter((r) => r !== 'deleted')
