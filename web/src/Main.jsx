@@ -14,7 +14,7 @@ import Header from './components/Header';
 const Main = () => {
   return (
     <div>
-      <BrowserRouter>
+      <BrowserRouter basename="/recipe-book">
         <Header />
         <div className="container mb-5">
           <Routes>            
