@@ -1,8 +1,26 @@
 {
   "name": "coook.shared",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/jasparfitt/recipe-book#readme",
+  "bugs": {
+    "url": "https://github.com/jasparfitt/recipe-book/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jasparfitt/recipe-book.git"
+  },
+  "license": "ISC",
+  "author": "Jason Parfitt",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "dependencies": {
     "parse-unit": "^1.0.1",
     "formik": "^2.2.9",
     "react": "^19.0.0"
-  }
+  },
+  "devDependencies": {}
 }
