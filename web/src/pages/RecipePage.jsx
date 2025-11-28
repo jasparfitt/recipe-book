@@ -4,7 +4,7 @@ import './RecipePage.scss'
 import { Form, Field, Formik } from 'formik';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import CloseIcon from '@mui/icons-material/Close';
-import useRecipePage from '../../../shared/pages/useRecipePage';
+import useRecipePage from 'coook.shared/pages/useRecipePage';
 
 const RecipePage = () => {
   const params = useParams();

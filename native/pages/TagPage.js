@@ -3,7 +3,7 @@ import HeadingText from "../components/HeadingText";
 import RecipeButton from "../components/RecipeButton";
 import SearchBar from "../components/SearchBar";
 import useStyles from "../hooks/useStyles";
-import useTagPage from "../../shared/pages/useTagPage";
+import useTagPage from "coook.shared/pages/useTagPage";
 
 const TagPage = ({route}) => {
   const { screenContainer, capitals, mb2, mb3 } = useStyles();

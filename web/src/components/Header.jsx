@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import { useContext, useEffect } from 'react';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
-import GoogleEnabledContext from "../../../shared/context/GoogleEnabledContext";
-import DarkModeContext from '../../../shared/context/DarkModeContext';
+import GoogleEnabledContext from "coook.shared/context/GoogleEnabledContext";
+import DarkModeContext from 'coook.shared/context/DarkModeContext';
 
 const Header = () => {
   const navigate = useNavigate();

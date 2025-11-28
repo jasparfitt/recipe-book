@@ -2,7 +2,7 @@ import HeadingText from '../components/HeadingText';
 import RecipeForm from '../components/RecipeForm';
 import { useContext } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import RecipeContext from '../../shared/context/RecipeContext';
+import RecipeContext from 'coook.shared/context/RecipeContext';
 import { View } from 'react-native';
 import useStyles from '../hooks/useStyles';
 import BackButton from '../components/BackButton';

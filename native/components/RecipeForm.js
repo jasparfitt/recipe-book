@@ -6,8 +6,8 @@ import Button from './Button';
 import IngredientsField from './IngredientsField';
 import MethodField from './MethodField';
 import useStyles from '../hooks/useStyles';
-import AutoChecker from '../../shared/components/AutoChecker';
-import useRecipeForm from '../../shared/components/useRecipeForm';
+import AutoChecker from 'coook.shared/components/AutoChecker';
+import useRecipeForm from 'coook.shared/components/useRecipeForm';
 
 const RecipeForm = ({ recipe, onSubmit }) => {
   const { mb3, mb2, mt2, errorMessage, errorInput } = useStyles();

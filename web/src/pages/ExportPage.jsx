@@ -3,9 +3,9 @@ import { useParams } from 'react-router-dom';
 import './ExportPage.scss';
 import { useContext } from 'react';
 import saveAs from 'file-saver';
-import RecipeContext from "../../../shared/context/RecipeContext";
-import GDriveContext from "../../../shared/context/GDriveContext";
-import useOrderByKey from '../../../shared/hooks/useOrderByKey';
+import RecipeContext from "coook.shared/context/RecipeContext";
+import GDriveContext from "coook.shared/context/GDriveContext";
+import useOrderByKey from 'coook.shared/hooks/useOrderByKey';
 import SelectAllCheckbox from '../components/SelectAllCheckbox';
 import { jsPDF } from "jspdf";
 

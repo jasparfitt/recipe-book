@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import RecipeForm from '../components/RecipeForm';
 import BackButton from '../components/BackButton';
-import RecipeContext from '../../../shared/context/RecipeContext';
+import RecipeContext from 'coook.shared/context/RecipeContext';
 import { useContext } from 'react';
 
 const NewRecipePage = () => {

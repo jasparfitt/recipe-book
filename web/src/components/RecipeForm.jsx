@@ -1,8 +1,8 @@
 import { Form, Field, ErrorMessage, FieldArray, Formik } from 'formik';
 import MethodInput from './MethodInput';
 import IngredientInput from './IngredientInput';
-import AutoChecker from '../../../shared/components/AutoChecker';
-import useRecipeForm from '../../../shared/components/useRecipeForm';
+import AutoChecker from 'coook.shared/components/AutoChecker';
+import useRecipeForm from 'coook.shared/components/useRecipeForm';
 
 const RecipeForm = ({ recipe, onSubmit }) => {
   const {

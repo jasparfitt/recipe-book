@@ -4,7 +4,7 @@ import Button from '../components/Button';
 import useStyles from '../hooks/useStyles';
 import RecipeButton from '../components/RecipeButton';
 import SearchBar from '../components/SearchBar';
-import useHomePage from '../../shared/pages/useHomePage';
+import useHomePage from 'coook.shared/pages/useHomePage';
 
 const HomePage = ({ navigation }) => {
   const { screenContainer, flexRow, mb2, mb3 } = useStyles();

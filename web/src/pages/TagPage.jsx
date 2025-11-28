@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import stringService from '../services/stringService';
 import RecipeList from '../components/RecipeList';
 import SearchBar from '../components/SearchBar';
-import useTagPage from '../../../shared/pages/useTagPage';
+import useTagPage from 'coook.shared/pages/useTagPage';
 
 const TagPage = () => {
   const params = useParams();

@@ -4,7 +4,7 @@ import FileUpload from '../components/FileUpload';
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from "react-router-dom";
 import { useContext } from 'react';
-import RecipeContext from '../../../shared/context/RecipeContext';
+import RecipeContext from 'coook.shared/context/RecipeContext';
 
 const ImportPage = () => {
   const initialValues = { type: 'json', file: ''};

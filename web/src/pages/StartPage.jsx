@@ -1,6 +1,6 @@
 import { Navigate, useNavigate } from "react-router-dom";
 import { useContext, useEffect } from 'react';
-import GoogleEnabledContext from '../../../shared/context/GoogleEnabledContext';
+import GoogleEnabledContext from 'coook.shared/context/GoogleEnabledContext';
 
 const StartPage = () => {
   const [googleEnabled, setGoogleEnabled] = useContext(GoogleEnabledContext);

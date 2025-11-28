@@ -4,7 +4,7 @@ import Button from "../components/Button";
 import HeadingText from "../components/HeadingText";
 import SearchBar from "../components/SearchBar";
 import useStyles from "../hooks/useStyles";
-import useTagsPage from "../../shared/pages/useTagsPage";
+import useTagsPage from "coook.shared/pages/useTagsPage";
 
 const TagsPage = ({navigation}) => {  
   const { screenContainer, mb2, mb3, mb1, textStart, capitals } = useStyles();

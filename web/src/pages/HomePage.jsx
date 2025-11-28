@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import RecipeList from '../components/RecipeList';
 import SearchBar from '../components/SearchBar';
-import useHomePage from '../../../shared/pages/useHomePage';
+import useHomePage from 'coook.shared/pages/useHomePage';
 
 const HomePage = () => {
   const { recipeList, setSearchTerm } = useHomePage();

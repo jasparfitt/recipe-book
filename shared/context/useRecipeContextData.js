@@ -1,5 +1,5 @@
-import useSaveRecipes from '../../shared/hooks/useSaveRecipes';
-import useRecipes from '../../shared/hooks/useRecipes';
+import useSaveRecipes from '../hooks/useSaveRecipes';
+import useRecipes from '../hooks/useRecipes';
 import { useState, useCallback, useEffect, useMemo } from 'react';
 
 const useRecipeContextData = (googleEnabled, googleLoading) => {

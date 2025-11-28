@@ -1,8 +1,8 @@
-import DarkModeContext from "../../../shared/context/DarkModeContext";
-import GoogleEnabledContext from "../../../shared/context/GoogleEnabledContext";
-import RecipeContext from "../../../shared/context/RecipeContext";
-import useRecipeContextData from "../../../shared/context/useRecipeContextData";
-import useStorageContextValue from "../../../shared/context/useStorageContextValue";
+import DarkModeContext from "coook.shared/context/DarkModeContext";
+import GoogleEnabledContext from "coook.shared/context/GoogleEnabledContext";
+import RecipeContext from "coook.shared/context/RecipeContext";
+import useRecipeContextData from "coook.shared/context/useRecipeContextData";
+import useStorageContextValue from "coook.shared/context/useStorageContextValue";
 
 const ContextWrapper = ({ children }) => {
   const { loading: googleLoading, contextValue: googleContextData } = useStorageContextValue('@googleEnabled');

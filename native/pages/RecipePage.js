@@ -11,7 +11,7 @@ import { Formik } from 'formik';
 import Button from '../components/Button';
 import TextField from '../components/TextField';
 import IconButton from '../components/IconButton';
-import useRecipePage from '../../shared/pages/useRecipePage';
+import useRecipePage from 'coook.shared/pages/useRecipePage';
 
 const RecipePage = ({ route, navigation }) => {
   const {

@@ -1,5 +1,5 @@
-import GDriveContext from "../../shared/context/GDriveContext";
-import StorageContext from "../../shared/context/StorageContext";
+import GDriveContext from "coook.shared/context/GDriveContext";
+import StorageContext from "coook.shared/context/StorageContext";
 import useGDrive from "../hooks/useGDrive";
 import useStorage from "../hooks/useStorage";
 

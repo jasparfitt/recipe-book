@@ -1,6 +1,6 @@
 import TagList from '../components/TagList';
 import SearchBar from '../components/SearchBar';
-import useTagsPage from '../../../shared/pages/useTagsPage';
+import useTagsPage from 'coook.shared/pages/useTagsPage';
 
 const TagsPage = () => {
   const { tagList, setSearchTerm } = useTagsPage();

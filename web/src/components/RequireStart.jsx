@@ -1,6 +1,6 @@
 import { Navigate } from 'react-router-dom';
 import { useContext } from 'react';
-import GoogleEnabledContext from "../../../shared/context/GoogleEnabledContext";
+import GoogleEnabledContext from "coook.shared/context/GoogleEnabledContext";
 
 const RequireStart = ({ children }) => {
   const [googleEnabled] = useContext(GoogleEnabledContext)
