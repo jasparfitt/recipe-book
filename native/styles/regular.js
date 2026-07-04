@@ -83,6 +83,12 @@ const regular = (theme) => StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 6,
   },
+  textInputBorder: {
+    borderColor: theme.inputBorder,
+    borderStyle: 'solid',
+    borderWidth: 1,
+    borderRadius: 4,
+  },
   errorMessage: {
     fontSize: 16,
     color: theme.outlineSecondary,
@@ -106,13 +112,6 @@ const regular = (theme) => StyleSheet.create({
     backgroundColor: theme.background,
     paddingVertical: 12,
     paddingHorizontal: 20,
-  },
-  searchIcon: {
-    borderWidth: 1,
-    borderRightWidth: 0,
-    borderTopLeftRadius: 4,
-    borderBottomLeftRadius: 4,
-    borderColor: theme.inputBorder,
   },
   switchStyle: {
     marginLeft: -5, 

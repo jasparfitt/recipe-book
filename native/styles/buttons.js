@@ -1,4 +1,12 @@
 const buttons = (theme) => ({
+  btnGroup: {
+    borderRadius: 6,
+    borderStyle: 'solid',
+    borderWidth: 1,
+    borderColor: theme.outlinePrimary,
+    overflow: 'hidden', 
+    backgroundColor: '#3EB489'
+  },
   btn: {
     paddingVertical: 6,
     paddingHorizontal: 12,
@@ -49,18 +57,21 @@ const buttons = (theme) => ({
     textDecorationLine: 'underline',
     borderWidth: 0,
   },
+  groupBtn: {
+    backgroundColor: theme.background,
+  },
   groupStart: {
-    borderTopRightRadius: 0,
-    borderBottomRightRadius: 0,
-    borderRightWidth: 0,
+    borderWidth: 0,
+    borderRadius: 0,
   },
   groupMiddle: {
     borderRadius: 0,
     borderRightWidth: 0,
   },
   groupEnd: {
-    borderTopLeftRadius: 0,
-    borderBottomLeftRadius: 0,
+    borderWidth: 0,
+    borderLeftWidth: 1,
+    borderRadius: 0,
   }
 });
 

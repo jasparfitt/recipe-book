@@ -1,8 +1,8 @@
 import { Pressable, View } from 'react-native';
 import HeadingText from './HeadingText';
 import { useContext } from 'react';
-import GoogleEnabledContext from '../context/GoogleEnabledContext';
-import DarkModeContext from '../context/DarkModeContext';
+import GoogleEnabledContext from 'coook.shared/context/GoogleEnabledContext';
+import DarkModeContext from 'coook.shared/context/DarkModeContext';
 import LinkButton from './LinkButton';
 import useStyles from '../hooks/useStyles';
 import ThemeText from './ThemeText';
@@ -44,8 +44,8 @@ const Menu = ({ navigation }) => {
           <ThemeText style={{...ms2, ...myAuto, ...p1}}>Google integration</ThemeText>
         </Pressable>
       </View>
-      <LinkButton style={mb2} variant="Primary" to={{screen: 'Export'}}>Export recipes</LinkButton>
-      <LinkButton style={mb3} variant="Primary" to={{screen: 'Import'}}>Import recipes</LinkButton>
+      <LinkButton style={mb2} variant="Primary" screen="Export">Export recipes</LinkButton>
+      <LinkButton style={mb3} variant="Primary" screen="Import">Import recipes</LinkButton>
     </View>
   )
 };

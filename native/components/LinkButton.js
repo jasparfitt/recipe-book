@@ -1,8 +1,8 @@
 import { useLinkProps } from '@react-navigation/native';
 import Button from './Button';
 
-const LinkButton = ({to, children, ...props}) => {
-  const { onPress, ...linkProps } = useLinkProps({ to });
+const LinkButton = ({ screen, children, ...props }) => {
+  const { onPress, ...linkProps } = useLinkProps({ screen });
 
   return (
     <Button onPress={onPress} {...linkProps} {...props}>

@@ -10,7 +10,7 @@ const PlatformContextWrapper = ({ children }) => {
   return (
     <StorageContext.Provider value={store}>
       <GDriveContext.Provider value={getGDrive}>
-        {children}
+        {store && getGDrive ? children : null}
       </GDriveContext.Provider>
     </StorageContext.Provider>
   );

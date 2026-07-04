@@ -4,11 +4,11 @@ import RemoveButton from "./RemoveButton";
 import useStyles from "../hooks/useStyles";
 
 const IngredientsField = ({ baseName, index, extraStyle }) => {
-  const { flexRow, groupStart, groupEnd } = useStyles();
+  const { flexRow, groupStart, groupEnd, textInputBorder } = useStyles();
   const name = `${baseName}[${index}]`;
 
   return (
-    <View style={{...extraStyle, ...flexRow}}>
+    <View style={{ ...extraStyle, ...flexRow, ...textInputBorder }}>
       <TextField extraStyle={{flex: 1, ...groupStart}} name={`${name}.amount`}/>
       <TextField extraStyle={{flex: 3, ...groupEnd}} name={`${name}.name`}/>
       <RemoveButton baseName={baseName} index={index}/>

@@ -7,8 +7,8 @@ const Button = ({onPress, style, variant, children, outerStyle, ...props}) => {
   const combinedStyle = (pressed) => ({
     ...styles.btn,
     ...styles[`btn${variant}`],
-    ...(pressed ? styles[`btn${variant}Pressed`] : {}),
-    ...(style)
+    ...(style),
+    ...(pressed ? styles[`btn${variant}Pressed`] : {}),    
   })
 
   return (

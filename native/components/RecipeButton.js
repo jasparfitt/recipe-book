@@ -4,22 +4,22 @@ import useStyles from "../hooks/useStyles";
 import IconButton from "./IconButton";
 import { useNavigation } from '@react-navigation/native';
 
-const RecipeButton = ({item}) => {
-  const { flexFill, flexRow, mb1, groupStart, groupEnd, myAuto, textStart } = useStyles();
+const RecipeButton = ({ item }) => {
+  const { flexFill, flexRow, flexColumn, mb1, groupStart, groupEnd, myAuto, textStart, btnGroup, groupBtn } = useStyles();
   const { navigate } = useNavigation();
 
   return (
-    <View style={{...flexRow, ...mb1, ...flexFill}}>
+    <View style={{ ...flexRow, ...mb1, ...flexFill, ...btnGroup }}>
       <Button 
         variant="OutlinePrimary" 
-        style={{...groupStart, ...textStart}} 
+        style={{ ...groupStart, ...textStart, ...groupBtn }} 
         outerStyle={flexFill}
-        onPress={() => navigate('Recipe', {id: item.id})}>
+        onPress={() => navigate('Recipe', { id: item.id })}>
         {item.recipeName}
       </Button>
       <IconButton 
         variant="OutlinePrimary" 
-        style={{...groupEnd, height: '100%'}} 
+        style={{ ...groupEnd, ...groupBtn, height: '100%' }} 
         iconStyle={myAuto} 
         iconName="edit" 
         iconSize={20} 

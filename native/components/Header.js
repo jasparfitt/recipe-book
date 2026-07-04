@@ -1,11 +1,11 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { Link, useTheme } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import {Text, View} from 'react-native';
+import { MaterialIcons } from '@react-native-vector-icons/material-icons';
+import { Text, View } from 'react-native';
 import LinkButton from './LinkButton';
 import useStyle from '../hooks/useStyles';
 import IconButton from './IconButton';
-import RecipeContext from '../context/RecipeContext';
+import RecipeContext from 'coook.shared/context/RecipeContext';
 
 const Header = ({navigation}) => {
   const { navbar, container, mb3, flexRow, logoText, myAuto, headerButton, py1, msAuto, ms2, me2, flexFill, errorMessage, errorBorder } = useStyle();
@@ -17,13 +17,13 @@ const Header = ({navigation}) => {
       <View style={{...container, ...flexRow}}>
         <Link style={{...flexRow, ...myAuto, ...me2}} to={{screen: 'Home'}}>
           <View style={flexRow}>
-            <Icon name="restaurant" size={30} color={colors.buttonText} />
+            <MaterialIcons name="restaurant" size={30} color={colors.buttonText} />
             <Text style={logoText}>Coook</Text>
           </View>
         </Link>
         <View style={{...flexRow, ...flexFill}}>
-          <LinkButton style={headerButton} outerStyle={{...myAuto, ...ms2}} variant="Primary" to={{screen: 'Home'}}>Home</LinkButton>
-          <LinkButton style={headerButton} outerStyle={{...myAuto, ...ms2}} variant="Primary" to={{screen: 'Tags'}}>Tags</LinkButton>
+          <LinkButton style={headerButton} outerStyle={{...myAuto, ...ms2}} variant="Primary" screen="Home">Home</LinkButton>
+          <LinkButton style={headerButton} outerStyle={{...myAuto, ...ms2}} variant="Primary" screen="Tags">Tags</LinkButton>
           <IconButton 
             style={{...headerButton, ...py1}} 
             outerStyle={{...myAuto, ...msAuto}} 

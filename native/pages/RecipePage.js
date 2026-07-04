@@ -1,6 +1,6 @@
 import { Text, View, ScrollView } from 'react-native';
 import HeadingText from '../components/HeadingText';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import { MaterialIcons } from '@react-native-vector-icons/material-icons';
 import BackButton from '../components/BackButton';
 import useStyles from '../hooks/useStyles';
 import ThemeText from '../components/ThemeText';
@@ -12,6 +12,7 @@ import Button from '../components/Button';
 import TextField from '../components/TextField';
 import IconButton from '../components/IconButton';
 import useRecipePage from 'coook.shared/pages/useRecipePage';
+import { useState } from 'react';
 
 const RecipePage = ({ route, navigation }) => {
   const {
@@ -23,6 +24,7 @@ const RecipePage = ({ route, navigation }) => {
   const { 
     recipe, validateForm, resetAdjuster, removeRecipe, isMultiplier
   } = useRecipePage({ params: route.params });
+  const id = recipe?.id;
 
   const itemStyle = (index) => {
     const isTop = index === 0;
@@ -68,14 +70,14 @@ const RecipePage = ({ route, navigation }) => {
         <HeadingText level="h1" style={myAuto}>{recipe.recipeName}</HeadingText>
         <ModalDropdown
           style={{...myAuto, ...msAuto}}
-          renderButtonText={() => false}
           dropdownTextStyle={dropdownOption}
           dropdownTextHighlightStyle={dropdownOption}
           onSelect={handleOption}
           dropdownStyle={dropdown}
+          saveScrollPosition={false}
           options={['Update', 'Delete', 'Export recipe', 'Adjust amount']}
         >
-          <Icon 
+          <MaterialIcons
             style={{...py1, ...px1, ...pt2, ...btnLink}} 
             variant="Link" 
             name="more-vert" 
@@ -88,7 +90,7 @@ const RecipePage = ({ route, navigation }) => {
             {recipe.tags.map((tagName, index) => (
               <View key={index} style={{...flexRow, ...me2, ...mb1}}>
                 <Text style={tag}>{tagName}</Text>
-                <Icon name="label" size={43.5} color={colors.primary} style={{marginLeft: -30, zIndex: -1, marginVertical: -9}} />
+                <MaterialIcons name="label" size={43.5} color={colors.primary} style={{marginLeft: -30, zIndex: -1, marginVertical: -9}} />
               </View>
             ))}
           </View>
@@ -97,7 +99,7 @@ const RecipePage = ({ route, navigation }) => {
         {adjustPanel ? (
             <Formik
               validateOnBlur
-              initialValues={{adjust: isMultiplier ? '1' : `${parseInt(originalRecipe.makes)}`}}
+              initialValues={{adjust: isMultiplier ? '1' : `${parseInt(recipe.makes)}`}}
               validate={validateForm}>
               {({ resetForm }) => (
                 <View style={{...card, ...mb2}}>

@@ -1,22 +1,14 @@
-import { useFormikContext } from "formik";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
+import useSelectAllCheckbox from "coook.shared/components/useSelectAllCheckbox";
 
 const SelectAllCheckbox = ({ keyName, allCount, allSelectedValue }) => {
-  const { values, setFieldValue } = useFormikContext();
   const selectAll = useRef();
-  const [checked, setChecked] = useState(false);
-  const selectedLength = values[keyName]?.length || 0;
-  const isAllSelected = selectedLength === allCount;
-  const isNoneSelected = selectedLength === 0;
-  const indeterminate = !isAllSelected && !isNoneSelected;
 
-  useEffect(() => {
-    if (isAllSelected) {
-      setChecked(true);
-    } else if (isNoneSelected) {
-      setChecked(false);
-    }
-  }, [selectedLength, allCount]);
+  const {
+    onChange,
+    indeterminate,
+    checked
+  } = useSelectAllCheckbox({ keyName, allCount, allSelectedValue });
 
   useEffect(() => {
     if (selectAll.current) {
@@ -28,13 +20,6 @@ const SelectAllCheckbox = ({ keyName, allCount, allSelectedValue }) => {
     }
   }, [indeterminate]);
 
-  const onChange = () => {
-    if (checked) {
-      setFieldValue(keyName, []);
-    } else {
-      setFieldValue(keyName, allSelectedValue);
-    }
-  };
 
   return (
     <div className="form-check mx-1">

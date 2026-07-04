@@ -1,6 +1,6 @@
-import { Pressable, Text, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import useStyles from '../hooks/useStyles';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import { MaterialIcons } from '@react-native-vector-icons/material-icons';
 
 const IconButton = ({ onPress, style, variant, outerStyle, iconName, iconSize, iconStyle, ...props }) => {
   const styles = useStyles()
@@ -8,8 +8,8 @@ const IconButton = ({ onPress, style, variant, outerStyle, iconName, iconSize, i
   const combinedStyle = (pressed) => ({
     ...styles.btn,
     ...styles[`btn${variant}`],
-    ...(pressed ? styles[`btn${variant}Pressed`] : {}),
-    ...(style)
+    ...(style),
+    ...(pressed ? styles[`btn${variant}Pressed`] : {}),    
   });
 
   const color = styles[`btn${variant}`].color;
@@ -19,7 +19,7 @@ const IconButton = ({ onPress, style, variant, outerStyle, iconName, iconSize, i
     <Pressable onPress={onPress} style={outerStyle} {...props}>
       {({pressed}) => (
         <View style={combinedStyle(pressed)}>
-          <Icon name={iconName} size={iconSize} style={iconStyle} color={pressed ? pressedColor : color} />
+          <MaterialIcons name={iconName} size={iconSize} style={iconStyle} color={pressed ? pressedColor : color} />
         </View>
       )}
     </Pressable>

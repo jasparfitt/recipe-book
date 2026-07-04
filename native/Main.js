@@ -1,4 +1,4 @@
-import { Text, StatusBar } from 'react-native';
+import { StatusBar, View } from 'react-native';
 import Header from './components/Header';
 import Menu from './components/Menu';
 import StartPage from './pages/StartPage';
@@ -7,14 +7,15 @@ import NewRecipePage from './pages/NewRecipePage';
 import RecipePage from './pages/RecipePage';
 import EditRecipePage from './pages/EditRecipePage';
 import { useContext } from 'react';
-import ExportRecipePage from './pages/ExportRecipePage';
-import ImportRecipePage from './pages/ImportRecipePage';
-import DarkModeContext from './context/DarkModeContext';
+import ExportPage from './pages/ExportPage';
+import ImportPage from './pages/ImportPage';
+import DarkModeContext from 'coook.shared/context/DarkModeContext';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import GoogleEnabledContext from './context/GoogleEnabledContext';
-import { NavigationContainer } from '@react-navigation/native';
+import GoogleEnabledContext from 'coook.shared/context/GoogleEnabledContext';
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import TagsPage from './pages/TagsPage';
 import TagPage from './pages/TagPage';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const CommonColours = {
   primary: '#3EB489',
@@ -26,7 +27,8 @@ const CommonColours = {
   switchThumb: '#CCCCCC',
 }
 
-const DefaultTheme = {
+const LightTheme = {
+  ...DefaultTheme,
   dark: false,
   colors: {
     ...CommonColours,
@@ -40,6 +42,7 @@ const DefaultTheme = {
 };
 
 const DarkTheme = {
+  ...DefaultTheme,
   dark: true,
   colors: {
     ...CommonColours,
@@ -59,26 +62,30 @@ const Main = () => {
   const [darkMode] = useContext(DarkModeContext);
 
   return (
-    <NavigationContainer theme={darkMode ? DarkTheme : DefaultTheme}>
-      <StatusBar backgroundColor='#3EB489'/>
-      <Drawer.Navigator
-        initialRouteName={googleEnabled === null ? "Start" : 'Home'}
-        drawerContent={(props) => <Menu {...props}/>}
-        backBehavior="history"
-        screenOptions={{
-          drawerPosition:'right',
-          header: (props) => <Header {...props}/>,
-        }}>
-        <Drawer.Screen name="Start" component={StartPage}/>
-        <Drawer.Screen name="Home" component={HomePage}/>
-        <Drawer.Screen name="Tags" options={{unmountOnBlur: true}} component={TagsPage}/>
-        <Drawer.Screen name="Tag" options={{unmountOnBlur: true}} component={TagPage}/>
-        <Drawer.Screen name="NewRecipe" options={{unmountOnBlur: true}} component={NewRecipePage}/>
-        <Drawer.Screen name="Recipe" options={{unmountOnBlur: true}} component={RecipePage}/>
-        <Drawer.Screen name="EditRecipe" options={{unmountOnBlur: true}} component={EditRecipePage}/>
-        <Drawer.Screen name="Export" component={ExportRecipePage}/>
-        <Drawer.Screen name="Import" component={ImportRecipePage}/>
-      </Drawer.Navigator>
+    <NavigationContainer theme={darkMode ? DarkTheme : LightTheme}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#3EB489' }}>
+        <View style={{ flex: 1 }}>
+          <StatusBar backgroundColor='#3EB489' />
+          <Drawer.Navigator
+            initialRouteName={googleEnabled === null ? "Start" : 'Home'}
+            drawerContent={(props) => <Menu {...props}/>}
+            backBehavior="history"
+            screenOptions={{
+              drawerPosition:'right',
+              header: (props) => <Header {...props}/>,
+            }}>
+            <Drawer.Screen name="Start" component={StartPage}/>
+            <Drawer.Screen name="Home" component={HomePage}/>
+            <Drawer.Screen name="Tags" options={{popToTopOnBlur: true}} component={TagsPage}/>
+            <Drawer.Screen name="Tag" options={{popToTopOnBlur: true}} component={TagPage}/>
+            <Drawer.Screen name="NewRecipe" options={{popToTopOnBlur: true}} component={NewRecipePage}/>
+            <Drawer.Screen name="Recipe" options={{popToTopOnBlur: true}} component={RecipePage}/>
+            <Drawer.Screen name="EditRecipe" options={{popToTopOnBlur: true}} component={EditRecipePage}/>
+            <Drawer.Screen name="Export" component={ExportPage}/>
+            <Drawer.Screen name="Import" component={ImportPage}/>
+          </Drawer.Navigator>
+        </View>
+      </SafeAreaView>
     </NavigationContainer>
   );
 };

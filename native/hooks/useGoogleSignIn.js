@@ -1,19 +1,23 @@
-import { GoogleSignin, statusCodes } from "@react-native-google-signin/google-signin";
+import { GoogleSignin, isNoSavedCredentialFoundResponse, isSuccessResponse, statusCodes } from "@react-native-google-signin/google-signin";
 import { useCallback } from "react";
 
 const useGoogleSignIn = () => {
   const googleSignIn = useCallback(async () => {
     try {
-      await GoogleSignin.signInSilently();
-    } catch (error) {
-      if (error.code === statusCodes.SIGN_IN_REQUIRED) {
-        await GoogleSignin.signIn();
-      } else {
-        throw error;
+      let resp = await GoogleSignin.signInSilently();
+
+      if (isNoSavedCredentialFoundResponse(resp)) {
+        resp = await GoogleSignin.signIn();
       }
+
+      if (!isSuccessResponse(resp)) {
+        throw new Error(JSON.stringify(resp));
+      }
+      
+      return true;
+    } catch (e) {
+      console.log(e);
     }
-    
-    return true;
   }, []);
 
   return [googleSignIn];

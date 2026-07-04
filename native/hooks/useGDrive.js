@@ -7,7 +7,9 @@ const useGDrive = () => {
   const [googleSignIn] = useGoogleSignIn();
 
   const getDrive = useCallback(async () => {
-    if (!(await GoogleSignin.isSignedIn())) {
+    const isLoggedIn = GoogleSignin.getCurrentUser();
+
+    if (!isLoggedIn) {
       await googleSignIn();
     }
   

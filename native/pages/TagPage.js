@@ -5,13 +5,14 @@ import SearchBar from "../components/SearchBar";
 import useStyles from "../hooks/useStyles";
 import useTagPage from "coook.shared/pages/useTagPage";
 
-const TagPage = ({route}) => {
+const TagPage = ({ route }) => {
   const { screenContainer, capitals, mb2, mb3 } = useStyles();
-  const { recipeList, setSearchTerm } = useTagPage(route.params);
+  const params = route.params;
+  const { recipeList, setSearchTerm } = useTagPage(params);
   
   return (
     <View style={screenContainer}>
-      <HeadingText style={capitals} level="h1">{tag}</HeadingText>
+      <HeadingText style={capitals} level="h1">{params.tag}</HeadingText>
       <SearchBar setSearchTerm={setSearchTerm} style={mb2} />
       <FlatList
         data={recipeList}

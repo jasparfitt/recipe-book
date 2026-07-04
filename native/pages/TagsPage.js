@@ -6,7 +6,7 @@ import SearchBar from "../components/SearchBar";
 import useStyles from "../hooks/useStyles";
 import useTagsPage from "coook.shared/pages/useTagsPage";
 
-const TagsPage = ({navigation}) => {  
+const TagsPage = ({ navigation }) => {  
   const { screenContainer, mb2, mb3, mb1, textStart, capitals } = useStyles();
   const { tagList, setSearchTerm } = useTagsPage();
   
@@ -16,7 +16,7 @@ const TagsPage = ({navigation}) => {
       <SearchBar setSearchTerm={setSearchTerm} style={mb2} />
       <FlatList
         data={tagList}
-        renderItem={({item}) => <Button variant="OutlinePrimary" style={{ ...textStart, ...capitals }} outerStyle={mb1} onPress={() => navigation.navigate("Tag", { tag: item })}>{item}</Button>}
+        renderItem={({ item }) => <Button variant="OutlinePrimary" style={{ ...textStart, ...capitals }} outerStyle={mb1} onPress={() => navigation.navigate("Tag", { tag: item })}>{item}</Button>}
         ListFooterComponent={<View style={mb3}/>}
         keyExtractor={(i) => i}>
       </FlatList>

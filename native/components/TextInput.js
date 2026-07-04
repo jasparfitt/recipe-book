@@ -1,4 +1,4 @@
-import { TextInput as NativeTextInput } from "react-native";
+import { KeyboardAvoidingView, TextInput as NativeTextInput } from "react-native";
 import useStyles from "../hooks/useStyles";
 
 const TextInput = ({ onChange, style, ...props }) => {

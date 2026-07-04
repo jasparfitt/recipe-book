@@ -28,6 +28,7 @@ const Main = () => {
             <Route path="/export" element={<RequireStart><ExportPage /></RequireStart>}/>
             <Route path="/export/:id" element={<RequireStart><ExportPage /></RequireStart>}/>
             <Route path="/import" element={<RequireStart><ImportPage /></RequireStart>}/>
+            <Route path="/privacy-policy" element={<PrivacyPolicyPage/>}/>
             <Route path="/*" element={<StartPage />}/>
           </Routes>
         </div>

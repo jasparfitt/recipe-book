@@ -2,7 +2,7 @@ import { View } from 'react-native';
 import HeadingText from '../components/HeadingText';
 import { useContext, useEffect } from 'react';
 import Button from '../components/Button';
-import GoogleEnabledContext from '../context/GoogleEnabledContext';
+import GoogleEnabledContext from 'coook.shared/context/GoogleEnabledContext';
 import useStyles from '../hooks/useStyles';
 import ThemeText from '../components/ThemeText';
 

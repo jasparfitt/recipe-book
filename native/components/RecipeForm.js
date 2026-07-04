@@ -1,4 +1,4 @@
-import { SectionList, Text, View } from 'react-native';
+import { KeyboardAvoidingView, SectionList, View } from 'react-native';
 import TextField from './TextField';
 import HeadingText from './HeadingText';
 import { FieldArray, Formik } from 'formik';
@@ -8,9 +8,12 @@ import MethodField from './MethodField';
 import useStyles from '../hooks/useStyles';
 import AutoChecker from 'coook.shared/components/AutoChecker';
 import useRecipeForm from 'coook.shared/components/useRecipeForm';
+import { useIsFocused } from '@react-navigation/native';
+import ErrorMessage from './ErrorMessage';
 
 const RecipeForm = ({ recipe, onSubmit }) => {
-  const { mb3, mb2, mt2, errorMessage, errorInput } = useStyles();
+  const { mb3, mb2, mt2, errorInput } = useStyles();
+  const isFocused = useIsFocused();
   const {
     handleFormSubmit,
     validateForm,
@@ -47,54 +50,61 @@ const RecipeForm = ({ recipe, onSubmit }) => {
     data: [''],
   }];
 
-  return (
-    <Formik 
-      validateOnBlur
-      initialValues={initialValues}
-      validate={validateForm}
-      onSubmit={handleFormSubmit}>
-      {({ isSubmitting, values, errors, touched, handleSubmit }) => (
-        <>
-          <FieldArray
-            name="ingredients"
-            render={(arrayHelpers) => (
-              <AutoChecker helpers={arrayHelpers} name={'ingredients'} isEmpty={isObjectEmpty} defaultValue={defaultIngredient}/>
-            )} />
-          <FieldArray
-            name="steps"
-            render={(arrayHelpers) => (
-              <AutoChecker helpers={arrayHelpers} name={'steps'} isEmpty={isStringEmpty} defaultValue={defaultStep}/>
-            )} />
-          <SectionList
-            sections={data(values)}
-            keyExtractor={(item, index) => item + index}
-            renderItem={({item, section: { multiline, isButton, type, baseName }, index}) => {
-              if (isButton) {
-                return <View><Button variant="Primary" disabled={isSubmitting} style={{...mb3, ...mt2}} onPress={handleSubmit}>Save</Button></View>
-              }
-              
-              if (type === 'ingredients') {
-                return (<IngredientsField extraStyle={mb2} index={index} baseName={baseName} />);
-              }
-              
-              if (type === 'method') {
-                return (<MethodField extraStyle={mb2} index={index} baseName={baseName} />);
-              }
+  if (!isFocused) {
+    return null;
+  }
 
-              const name = baseName ? `${baseName}[${index}]` : item;
+  return (    
+      <Formik 
+        validateOnBlur
+        initialValues={initialValues}
+        validate={validateForm}
+        onSubmit={handleFormSubmit}>
+        {({ isSubmitting, values, errors, touched, handleSubmit }) => (
+          <>
+            <FieldArray
+              name="ingredients"
+              render={(arrayHelpers) => (
+                <AutoChecker helpers={arrayHelpers} name={'ingredients'} isEmpty={isObjectEmpty} defaultValue={defaultIngredient}/>
+              )} />
+            <FieldArray
+              name="steps"
+              render={(arrayHelpers) => (
+                <AutoChecker helpers={arrayHelpers} name={'steps'} isEmpty={isStringEmpty} defaultValue={defaultStep}/>
+              )} />
+            <KeyboardAvoidingView behavior="height" keyboardVerticalOffset={150} style={{ flex: 1 }}>
+              <SectionList
+                sections={data(values)}
+                keyExtractor={(item, index) => item + index}
+                renderItem={({item, section: { multiline, isButton, type, baseName }, index}) => {
+                  if (isButton) {
+                    return <View><Button variant="Primary" disabled={isSubmitting} style={{...mb3, ...mt2}} onPress={handleSubmit}>Save</Button></View>
+                  }
+                  
+                  if (type === 'ingredients') {
+                    return (<IngredientsField extraStyle={mb2} index={index} baseName={baseName} />);
+                  }
+                  
+                  if (type === 'method') {
+                    return (<MethodField extraStyle={mb2} index={index} baseName={baseName} />);
+                  }
 
-              return (
-                <>
-                  <TextField multiline={multiline} extraStyle={{ ...mb2, ...(errors[name] && touched[name] ? errorInput : {}) }} name={name}/>
-                  {errors[name] && touched[name] ? <Text style={errorMessage} name={name}>required</Text> : null}
-                </>
-              );
-            }}
-            renderSectionHeader={({ section: { header } }) => header ? (<HeadingText level="h3">{header}</HeadingText>) : null}
-          />
-        </>
-      )}
-    </Formik>
+                  const name = baseName ? `${baseName}[${index}]` : item;
+
+                  return (
+                    <>
+                      <TextField multiline={multiline} extraStyle={{ ...mb2, ...(errors[name] && touched[name] ? errorInput : {}) }} name={name}/>
+                      <ErrorMessage name={name}>required</ErrorMessage>
+                    </>
+                  );
+                }}
+                renderSectionHeader={({ section: { header } }) => header ? (<HeadingText level="h3">{header}</HeadingText>) : null}
+              />
+            </KeyboardAvoidingView>
+          </>
+        )}
+      </Formik>
+    
   );
 };
 

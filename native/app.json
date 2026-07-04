@@ -34,12 +34,14 @@
       "favicon": "./assets/logo.png"
     },
     "plugins": [
-      "@react-native-google-signin/google-signin"
+      "@react-native-google-signin/google-signin",
+      "expo-document-picker"
     ],
     "extra": {
       "eas": {
         "projectId": "0987506c-e245-4492-876a-3dee61e67bc5"
       }
-    }
+    },
+    "owner": "hullodude"
   }
 }
