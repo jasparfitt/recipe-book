@@ -4,8 +4,7 @@ on:
   push:
     branches: [ "main" ]
     paths:
-      - 'web/**'
-    
+      - 'web/**'    
   workflow_dispatch:
 
 permissions:
@@ -43,7 +42,7 @@ jobs:
           npm run build
           
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v6
+        uses: actions/upload-pages-artifact@v5
         with:
           path: './web/build'
   deploy:

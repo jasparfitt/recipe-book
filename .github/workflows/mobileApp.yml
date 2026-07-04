@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'native/**'
+  workflow_dispatch:
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -40,4 +41,4 @@ jobs:
       - name: Build app
         run: |
           cd native
-          eas build --non-interactive
+          eas build --platform android --non-interactive
