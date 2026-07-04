@@ -15,16 +15,21 @@ import useRecipesExists from "./hooks/useRecipesExists";
 import useSaveRecipes from "./hooks/useSaveRecipes";
 import useSaveStorageValue from "./hooks/useSaveStorageValue";
 import useStorageValue from "./hooks/useStorageValue";
+import useExportPage from "./pages/useExportPage";
 import useHomePage from "./pages/useHomePage";
 import useRecipePage from "./pages/useRecipePage";
 import useTagPage from "./pages/useTagPage";
 import useTagsPage from "./pages/useTagsPage";
+import useImportPage from "./pages/useImportPage";
+import useSelectAllCheckbox from "./components/useSelectAllCheckbox";
 
 const pages = {
   useTagPage,
   useTagsPage,
   useRecipePage,
   useHomePage,
+  useExportPage,
+  useImportPage,
 };
 
 const hooks = {
@@ -51,6 +56,7 @@ const context = {
 const components = {
   AutoChecker,
   useRecipeForm,
+  useSelectAllCheckbox,
 };
 
 export {
