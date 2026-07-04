@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useContext, useEffect } from 'react';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
 import GoogleEnabledContext from "coook.shared/context/GoogleEnabledContext";
@@ -47,25 +47,30 @@ const Header = () => {
             <h5 className="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
             <button type="button" className="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
           </div>
-          <div className="offcanvas-body">
-            <ul className="navbar-nav justify-content-end flex-grow-1 pe-3">
-              <li className="nav-item">
-                <div className="form-check form-switch form-control-lg">
-                  <input className="form-check-input" type="checkbox" role="switch" id="googleSwitch" onChange={changeDarkMode} checked={darkMode}/>
-                  <label className="form-check-label fs-6" htmlFor="googleSwitch">Dark mode</label>
-                </div>
-              </li>
-              <li className="nav-item">
-                <div className="form-check form-switch form-control-lg">
-                  <input className="form-check-input" type="checkbox" role="switch" id="googleSwitch" onChange={changeGoogleState} checked={googleEnabled}/>
-                  <label className="form-check-label fs-6" htmlFor="googleSwitch">Google integration</label>
-                </div>
-              </li>
-              <li className="nav-item">
-                <button className="nav-link btn link-btn" onClick={() => navigate('/export')}  data-bs-dismiss="offcanvas">Export recipes</button>
-                <button className="nav-link btn link-btn" onClick={() => navigate('/import')}  data-bs-dismiss="offcanvas">Import recipes</button>
-              </li>
-            </ul>
+          <div className="offcanvas-body d-flex flex-column justify-content-between">
+            <div>
+              <ul className="navbar-nav justify-content-end flex-grow-1 pe-3">
+                <li className="nav-item">
+                  <div className="form-check form-switch form-control-lg">
+                    <input className="form-check-input" type="checkbox" role="switch" id="googleSwitch" onChange={changeDarkMode} checked={darkMode}/>
+                    <label className="form-check-label fs-6" htmlFor="googleSwitch">Dark mode</label>
+                  </div>
+                </li>
+                <li className="nav-item">
+                  <div className="form-check form-switch form-control-lg">
+                    <input className="form-check-input" type="checkbox" role="switch" id="googleSwitch" onChange={changeGoogleState} checked={googleEnabled}/>
+                    <label className="form-check-label fs-6" htmlFor="googleSwitch">Google integration</label>
+                  </div>
+                </li>
+                <li className="nav-item">
+                  <button className="nav-link btn link-btn" onClick={() => navigate('/export')} data-bs-dismiss="offcanvas">Export recipes</button>
+                  <button className="nav-link btn link-btn" onClick={() => navigate('/import')} data-bs-dismiss="offcanvas">Import recipes</button>
+                </li>
+              </ul>
+            </div>
+            <div className="text-end">
+              <small><Link to="/privacy-policy" onClick={() => navigate('/privacy-policy')} data-bs-dismiss="offcanvas">Privacy policy</Link></small>
+            </div>
           </div>
         </div>
       </div>
