@@ -19,13 +19,10 @@ const ExportPage = ({ route }) => {
 
   const saveFile = async (content, name) => {
     try {
-    console.log(Paths.document);
-    const path = await Directory.pickDirectoryAsync()
-    console.log(path);
-    const file = new File(path.uri, name);
-    file.create();
-    file.write(content);
-    console.log('foo')
+      const path = await Directory.pickDirectoryAsync()
+      const file = new File(path.uri, name);
+      file.create();
+      file.write(content);
     } catch (e) {
       console.log(e);
     }

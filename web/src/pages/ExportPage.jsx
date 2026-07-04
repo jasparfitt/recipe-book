@@ -61,7 +61,6 @@ const ExportPage = () => {
               <div className="text-danger">
                 <ErrorMessage name="recipes" />
               </div>
-              <input type="checkbox" value="foo" onChange={(e) => console.log(JSON.stringify(e))}/>
               <SelectAllCheckbox keyName="recipes" allCount={allRecipesSelectedValue.length} allSelectedValue={allRecipesSelectedValue} />
               <div className="recipeCheckList">
                 {recipeList.map((recipe, index) => ( 
