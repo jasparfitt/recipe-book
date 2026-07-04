@@ -41,4 +41,4 @@ jobs:
       - name: Build app
         run: |
           cd native
-          eas build --platform android --non-interactive
+          eas build --platform android --non-interactive --no-wait --environment production

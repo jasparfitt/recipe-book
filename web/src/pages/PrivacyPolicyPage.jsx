@@ -1,4 +1,4 @@
-const PrivacyPolicy = () => {
+const PrivacyPolicyPage = () => {
   return (
     <div>
       <h1>Privacy Policy</h1>
@@ -14,4 +14,4 @@ const PrivacyPolicy = () => {
   )
 }
 
-export default PrivacyPolicy;
+export default PrivacyPolicyPage;

@@ -10,6 +10,7 @@ import TagsPage from './pages/TagsPage';
 import TagPage from './pages/TagPage';
 import RequireStart from './components/RequireStart';
 import Header from './components/Header';
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 
 const Main = () => {
   return (
