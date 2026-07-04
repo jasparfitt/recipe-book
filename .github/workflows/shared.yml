@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'shared/package.json'
 
 permissions:
   contents: read
