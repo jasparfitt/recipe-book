@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import './ExportPage.scss';
 import saveAs from 'file-saver';
 import SelectAllCheckbox from '../components/SelectAllCheckbox';
-import useExportPage from 'coook.shared/shared/pages/useExportPage';
+import useExportPage from 'coook.shared/pages/useExportPage';
 
 const ExportPage = () => {
   const params = useParams();
