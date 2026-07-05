@@ -2,7 +2,6 @@ import { useContext } from 'react';
 import RecipeContext from "../context/RecipeContext";
 import GDriveContext from "../context/GDriveContext";
 import useOrderByKey from '../hooks/useOrderByKey';
-import { jsPDF } from "jspdf";
 
 const useExportPage = ({ saveJson, savePdf, saveDoc, params }) => {
   const [recipes] = useContext(RecipeContext);
@@ -51,37 +50,7 @@ const useExportPage = ({ saveJson, savePdf, saveDoc, params }) => {
       const data = await uploader.execute();
       saveDoc(data);
     } else if (values.type === 'pdf') {
-      var doc = new jsPDF({
-        unit: 'mm',
-        format: 'a4'
-      });
-
-      let htmlForloop = htmlArray;
-
-      if (!values.newPage) {
-        let allHtml = htmlArray.join('<hr>');
-        allHtml = `<div style="color: black;">${allHtml}</div>`;
-        htmlForloop = [allHtml];
-      }
-
-      for (let i = 0; i < htmlForloop.length; i++) {
-        const html = htmlForloop[i];
-        const margin = 25.4;
-        const height = doc.internal.pageSize.getHeight() - (margin * 2);
-        const width = doc.internal.pageSize.getWidth() - (margin * 2);
-        const scaledWidth = width * 4;
-        const startPage = i > 0 ? doc.internal.getNumberOfPages() : 0;
-
-        await doc.html(`<div style="color: black;">${html}</div>`, {
-          callback: (pdf) => pdf,
-          y: height * startPage,
-          margin: margin,
-          width,
-          windowWidth: scaledWidth
-        });        
-      }
-
-      savePdf(doc, `${name}.pdf`);
+      savePdf(htmlArray, `${name}.pdf`);
     } else if (values.type === 'json') {
       const content = JSON.stringify(chosenRecipes);
       const filename = `${name}.json`;

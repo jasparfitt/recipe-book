@@ -1,6 +1,6 @@
 {
   "name": "coook.shared",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Shared code used in the coook application.",
   "homepage": "https://github.com/jasparfitt/recipe-book/shared#readme",
   "bugs": {
@@ -19,7 +19,6 @@
   },
   "dependencies": {
     "formik": "^2.2.9",
-    "jspdf": "^4.2.1",
     "parse-unit": "^1.0.1",
     "react": "^19.0.0"
   },
