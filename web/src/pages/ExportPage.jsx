@@ -4,6 +4,7 @@ import './ExportPage.scss';
 import saveAs from 'file-saver';
 import SelectAllCheckbox from '../components/SelectAllCheckbox';
 import useExportPage from 'coook.shared/pages/useExportPage';
+import { jsPDF } from "jspdf";
 
 const ExportPage = () => {
   const params = useParams();
@@ -16,7 +17,37 @@ const ExportPage = () => {
     saveAs(blob, filename);
   };
 
-  const savePdf = (doc, name) => {
+  const savePdf = (htmlArray, name) => {
+    var doc = new jsPDF({
+      unit: 'mm',
+      format: 'a4'
+    });
+
+    let htmlForloop = htmlArray;
+
+    if (!values.newPage) {
+      let allHtml = htmlArray.join('<hr>');
+      allHtml = `<div style="color: black;">${allHtml}</div>`;
+      htmlForloop = [allHtml];
+    }
+
+    for (let i = 0; i < htmlForloop.length; i++) {
+      const html = htmlForloop[i];
+      const margin = 25.4;
+      const height = doc.internal.pageSize.getHeight() - (margin * 2);
+      const width = doc.internal.pageSize.getWidth() - (margin * 2);
+      const scaledWidth = width * 4;
+      const startPage = i > 0 ? doc.internal.getNumberOfPages() : 0;
+
+      await doc.html(`<div style="color: black;">${html}</div>`, {
+        callback: (pdf) => pdf,
+        y: height * startPage,
+        margin: margin,
+        width,
+        windowWidth: scaledWidth
+      });        
+    }
+
     doc.save(name);
   };
 

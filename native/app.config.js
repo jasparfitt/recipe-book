@@ -1,8 +1,8 @@
-{
+module.exports = {
   "expo": {
     "name": "Coook",
     "slug": "Coook",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "orientation": "portrait",
     "icon": "./assets/logo.png",
     "userInterfaceStyle": "light",
@@ -22,8 +22,7 @@
       "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
-      "versionCode": 6,
-      "googleServicesFile": "./google-services.json",
+      "googleServicesFile": process.env.GOOGLE_SERVICES_JSON ?? "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-logo.png",
         "backgroundColor": "#3EB489"
@@ -35,7 +34,8 @@
     },
     "plugins": [
       "@react-native-google-signin/google-signin",
-      "expo-document-picker"
+      "expo-document-picker",
+      "expo-status-bar",
     ],
     "extra": {
       "eas": {
