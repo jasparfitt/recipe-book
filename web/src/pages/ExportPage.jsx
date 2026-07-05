@@ -17,7 +17,7 @@ const ExportPage = () => {
     saveAs(blob, filename);
   };
 
-  const savePdf = (htmlArray, name) => {
+  const savePdf = async (htmlArray, name) => {
     var doc = new jsPDF({
       unit: 'mm',
       format: 'a4'
