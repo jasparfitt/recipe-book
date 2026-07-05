@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router';
 import { useContext, useEffect } from 'react';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
 import GoogleEnabledContext from "coook.shared/context/GoogleEnabledContext";

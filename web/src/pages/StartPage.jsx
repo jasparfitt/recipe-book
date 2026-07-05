@@ -1,4 +1,4 @@
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router";
 import { useContext, useEffect } from 'react';
 import GoogleEnabledContext from 'coook.shared/context/GoogleEnabledContext';
 

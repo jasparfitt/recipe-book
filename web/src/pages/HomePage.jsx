@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import RecipeList from '../components/RecipeList';
 import SearchBar from '../components/SearchBar';
 import useHomePage from 'coook.shared/pages/useHomePage';

@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router';
 import RecipeForm from '../components/RecipeForm';
 import BackButton from '../components/BackButton';
 import RecipeContext from 'coook.shared/context/RecipeContext';

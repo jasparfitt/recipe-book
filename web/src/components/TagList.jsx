@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import stringService from '../services/stringService';
 
 const TagList = ({ tags }) => {

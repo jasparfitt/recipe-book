@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import stringService from '../services/stringService';
 import RecipeList from '../components/RecipeList';
 import SearchBar from '../components/SearchBar';

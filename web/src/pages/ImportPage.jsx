@@ -1,7 +1,7 @@
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import './ExportPage.scss';
 import FileUpload from '../components/FileUpload';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import useImportPage from 'coook.shared/pages/useImportPage';
 
 const ImportPage = () => {

@@ -1,5 +1,5 @@
 import EditIcon from '@mui/icons-material/Edit';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 const RecipeList = ({ recipes }) => {
   const navigate = useNavigate();
